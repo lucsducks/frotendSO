@@ -5,8 +5,6 @@ class RegisterFormProvider extends ChangeNotifier {
   String email = '';
   String password = '';
   String nombre = '';
-  String apellido = '';
-  String dni = '';
   validateForm() {
     if (formKey.currentState!.validate()) {
       return true;

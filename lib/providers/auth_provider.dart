@@ -36,15 +36,8 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
-  register(String email, String password, String nombre, String apellido,
-      String dni) {
-    final data = {
-      'nombre': nombre,
-      'apellido': apellido,
-      'dni': dni,
-      'correo': email,
-      'password': password
-    };
+  register(String email, String password, String nombre) {
+    final data = {'nombre': nombre, 'correo': email, 'password': password};
     restApi.post('/usuarios', data).then((json) {
       final authResponse = AuthResponse.fromMap(json);
       user = authResponse.usuario;
