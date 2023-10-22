@@ -37,14 +37,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthProvider>(context).user!;
     final size = MediaQuery.of(context).size;
-    Map<String, String> roleMap = {
-      'DIRECTOR_ROLE': 'Director',
-      'APODERADO_ROLE': 'Apoderado',
-      'ESTUDIANTE_ROLE': 'Estudiante',
-      'PROFESOR_ROLE': 'Profesor',
-      'DEV_ROLE': 'Dev',
-      'SIN_ROLE': 'Sin rol'
-    };
+    Map<String, String> roleMap = {'DEV_ROLE': 'Dev', 'USER_ROLE': 'Usuario'};
     String? readableRole = roleMap[user.rol];
     if (size.width > 700) {
       return Container(
