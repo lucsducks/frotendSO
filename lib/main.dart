@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
         return SafeArea(child: layout);
       },
       theme: ThemeData.light().copyWith(
+          useMaterial3: true,
           scrollbarTheme: ScrollbarThemeData().copyWith(
             thumbColor: MaterialStateProperty.all(
                 const Color.fromARGB(52, 199, 193, 193)),

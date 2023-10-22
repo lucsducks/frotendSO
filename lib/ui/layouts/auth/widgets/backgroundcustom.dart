@@ -27,7 +27,7 @@ class BackgroundCustom extends StatelessWidget {
   BoxDecoration buidBackground() {
     return const BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('assets/images/lab.png'), fit: BoxFit.cover),
+          image: AssetImage('assets/images/fon3.png'), fit: BoxFit.cover),
     );
   }
 }

@@ -20,7 +20,7 @@ class CustomTitle extends StatelessWidget {
             width: 200,
             height: 100,
             child: Image.asset(
-              'assets/images/sumaqre.png',
+              'assets/images/1.png',
               width: 200,
               height: 100,
               fit: BoxFit.contain,
@@ -32,8 +32,8 @@ class CustomTitle extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(
-                "El mundo del asdasdasd",
-                style: GoogleFonts.montserratAlternates(
+                "IzIFILE",
+                style: GoogleFonts.abel (
                     fontSize: 40,
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
