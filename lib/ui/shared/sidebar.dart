@@ -58,43 +58,16 @@ class Sidebar extends StatelessWidget {
         onPressed: () => navigateTo(Flurorouter.dashboardRoute, context),
         isActive: sideMenuProvider.currentPage == Flurorouter.dashboardRoute,
       ),
-      ExpansionTile(
-        title: Text('Usuarios'),
-        leading: Icon(Icons.people),
-        children: [
-          MenuItem(
-            text: 'Usuarios',
-            icon: Icons.person_pin_outlined,
-            onPressed: () =>
-                navigateTo(Flurorouter.usuarioSinRoleRoute, context),
-            isActive:
-                sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
-          ),
-          SizedBox(
-            height: 20,
-          )
-        ],
-      ),
       MenuItem(
-          text: 'Discount',
-          icon: Icons.attach_money_outlined,
-          onPressed: () {}),
+        text: 'Usuarios',
+        icon: Icons.person_pin_outlined,
+        onPressed: () => navigateTo(Flurorouter.usuarioSinRoleRoute, context),
+        isActive:
+            sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
+      ),
       SizedBox(height: 10),
-      TextSeparator(text: 'UI Elements'),
       MenuItem(
-        text: 'Icons',
-        icon: Icons.list_alt_outlined,
-        onPressed: () => navigateTo(Flurorouter.iconsRoute, context),
-        isActive: sideMenuProvider.currentPage == Flurorouter.iconsRoute,
-      ),
-      MenuItem(
-          text: 'Marketing',
-          icon: Icons.mark_email_read_outlined,
-          onPressed: () {}),
-      MenuItem(
-          text: 'Campaign', icon: Icons.note_add_outlined, onPressed: () {}),
-      MenuItem(
-        text: 'Black',
+        text: 'Terminal',
         icon: Icons.post_add_outlined,
         onPressed: () => navigateTo(Flurorouter.blankRoute, context),
         isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,

@@ -11,6 +11,7 @@ class _BlankViewState extends State<BlankView> {
   final TextEditingController _controller = TextEditingController();
   final List<String> _output = [];
   final _scrollController = ScrollController();
+  final focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +55,14 @@ class _BlankViewState extends State<BlankView> {
                             color: Colors.green),
                       ),
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
+                          focusNode: focusNode,
                           controller: _controller,
+                          onFieldSubmitted: (value) {
+                            _processCommand(value);
+                            _controller.clear();
+                            focusNode.requestFocus();
+                          },
                           style: TextStyle(
                               fontFamily: 'Courier',
                               fontSize: 16,
@@ -63,10 +70,6 @@ class _BlankViewState extends State<BlankView> {
                           cursorColor: Colors.green,
                           decoration: InputDecoration.collapsed(
                               hintText: '', border: InputBorder.none),
-                          onSubmitted: (value) {
-                            _processCommand(value);
-                            _controller.clear();
-                          },
                         ),
                       ),
                     ],
@@ -82,11 +85,22 @@ class _BlankViewState extends State<BlankView> {
 
   void _processCommand(String command) {
     setState(() {
-      _output.add('flutter@demo:~\$ $command');
-      if (command == 'hello') {
-        _output.add('Hello from Flutter Terminal!');
-      } else {
-        _output.add('Command not found: $command');
+      bool primrera = true;
+
+      if (primrera == true) {
+        _output.add('flutter@demo:~\$ $command');
+        primrera = false;
+      }
+      if (command == 'clear') {
+        _output.clear();
+      }
+      if (command == 'ls') {
+        _output.add(
+            'Descargas  Documentos  Escritorio  Imágenes  linux-6.5.7  Música  Plantillas  Público  Vídeos');
+      }
+
+      if (command == 'ls Escritorio') {
+        _output.add('leeme.txt  script.js');
       }
       // Auto-scroll to the bottom
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
