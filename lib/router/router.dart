@@ -12,6 +12,7 @@ class Flurorouter {
   static String registerRoute = '/auth/register';
 
   static String dashboardRoute = '/dashboard';
+  static String hostperonalRoute = '/dashboard/host/:hostid/owner/:ownerid';
   static String iconsRoute = '/dashboard/icons';
   static String blankRoute = '/dashboard/blank';
   static String usuarioSinRoleRoute = '/dashboard/usuarios/sinroles';
@@ -37,6 +38,9 @@ class Flurorouter {
         transitionType: TransitionType.fadeIn);
     router.define(usuarioSinRoleRoute,
         handler: DashboardHandlers.usuarioSinRol,
+        transitionType: TransitionType.fadeIn);
+    router.define(hostperonalRoute,
+        handler: DashboardHandlers.hostSeleccionado,
         transitionType: TransitionType.fadeIn);
 
     // 404

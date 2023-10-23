@@ -3,6 +3,7 @@ import 'package:dashboardadmin/providers/sidemenu_provider.dart';
 import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/ui/views/blank_view.dart';
 import 'package:dashboardadmin/ui/views/dashboard_view.dart';
+import 'package:dashboardadmin/ui/views/host_personal_view.dart';
 import 'package:dashboardadmin/ui/views/icons_view.dart';
 import 'package:dashboardadmin/ui/views/login_view.dart';
 import 'package:dashboardadmin/ui/views/usuarios_general_view.dart';
@@ -39,6 +40,24 @@ class DashboardHandlers {
       return UsuarioSinRoleView();
     else
       return LoginView();
+  });
+  static Handler hostSeleccionado = Handler(handlerFunc: (context, params) {
+    final authProvider = Provider.of<AuthProvider>(context!);
+    Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPageUrl(Flurorouter.hostperonalRoute);
+
+    if (authProvider.authStatus == AuthStatus.authenticated) {
+      if (params['hostid']?.first != null && params['ownerid']?.first != null) {
+        return HostPersonalView(
+          hostid: params['hostid']!.first,
+          ownerid: params['ownerid']!.first,
+        );
+      } else {
+        return DashboardView();
+      }
+    } else {
+      return LoginView();
+    }
   });
   static Handler blank = Handler(handlerFunc: (context, params) {
     final authProvider = Provider.of<AuthProvider>(context!);

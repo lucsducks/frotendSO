@@ -1,11 +1,11 @@
 import 'package:dashboardadmin/providers/auth_provider.dart';
 import 'package:dashboardadmin/providers/sshconexion_provider.dart';
+import 'package:dashboardadmin/services/navigation_service.dart';
 import 'package:dashboardadmin/ui/buttons/custom_icon_button.dart';
 import 'package:dashboardadmin/ui/cards/host_card.dart';
 import 'package:dashboardadmin/ui/cards/white_card.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
-import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +63,10 @@ class _DashboardViewState extends State<DashboardView> {
                               owner: e.owner,
                               v: e.v,
                               fechaCreacion: e.fechaCreacion,
+                              onTap: () {
+                                NavigationService.replaceTo(
+                                    '/dashboard/host/${e.id}/owner/${e.owner}');
+                              },
                             ))
                         .toList(),
                   ),

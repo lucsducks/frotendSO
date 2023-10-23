@@ -61,7 +61,7 @@ class _HostCardState extends State<HostCard> {
       onExit: (_) => setState(() => _isHovering = false),
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onDoubleTap: widget.onTap,
         child: Container(
           child: Card(
             color: _isHovering ? Colors.grey[300] : null,
