@@ -48,7 +48,7 @@ class Sidebar extends StatelessWidget {
   List<Widget> buildMenuItems(
       BuildContext context, SideMenuProvider sideMenuProvider) {
     final user = Provider.of<AuthProvider>(context).user!;
-    final allowedRoles = ["USER_ROLE", "DEV_ROLE"];
+    final allowedRoles = ["DEV_ROLE"];
 
     return [
       TextSeparator(text: ' Main'),
@@ -58,13 +58,14 @@ class Sidebar extends StatelessWidget {
         onPressed: () => navigateTo(Flurorouter.dashboardRoute, context),
         isActive: sideMenuProvider.currentPage == Flurorouter.dashboardRoute,
       ),
-      MenuItem(
-        text: 'Usuarios',
-        icon: Icons.person_pin_outlined,
-        onPressed: () => navigateTo(Flurorouter.usuarioSinRoleRoute, context),
-        isActive:
-            sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
-      ),
+      if (allowedRoles.any((role) => user.rol.contains(role)))
+        MenuItem(
+          text: 'Usuarios',
+          icon: Icons.person_pin_outlined,
+          onPressed: () => navigateTo(Flurorouter.usuarioSinRoleRoute, context),
+          isActive:
+              sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
+        ),
       SizedBox(height: 10),
       MenuItem(
         text: 'Terminal',

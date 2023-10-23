@@ -1,6 +1,7 @@
 import 'package:dashboardadmin/api/restApi.dart';
 import 'package:dashboardadmin/providers/auth_provider.dart';
 import 'package:dashboardadmin/providers/sidemenu_provider.dart';
+import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/providers/usuario_provider.dart';
 import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/services/localStorage.dart';
@@ -41,6 +42,10 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           lazy: false,
           create: (_) => UsuariosSistemaProvider(),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) => sshConexionProvider(),
         ),
       ],
       child: MyApp(),

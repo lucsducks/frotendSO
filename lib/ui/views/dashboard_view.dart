@@ -1,14 +1,33 @@
 import 'package:dashboardadmin/providers/auth_provider.dart';
+import 'package:dashboardadmin/providers/sshconexion_provider.dart';
+import 'package:dashboardadmin/ui/buttons/custom_icon_button.dart';
+import 'package:dashboardadmin/ui/cards/host_card.dart';
 import 'package:dashboardadmin/ui/cards/white_card.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
 import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  @override
+  void initState() {
+    super.initState();
+    final user = Provider.of<AuthProvider>(context, listen: false).user;
+    Provider.of<sshConexionProvider>(context, listen: false)
+        .getconexionesHost(user!.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthProvider>(context).user!;
+    final conexiones = Provider.of<sshConexionProvider>(context).conexiones;
+    print(conexiones);
     return Container(
       child: ListView(
         physics: ClampingScrollPhysics(),
@@ -18,59 +37,35 @@ class DashboardView extends StatelessWidget {
           WhiteCard(
               title: user.nombre,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Container(
-                      height: 70, // Altura especificada
-                      width: 300, // Ancho especificado
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // Imagen
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: Image.asset(
-                                ImgSample.get("fondo.png"),
-                                height:
-                                    60, // Ajusta para que sea proporcional al height de la tarjeta
-                                width: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Container(
-                                width: 10), // Espacio entre imagen y texto
-                            // Textos
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, // Centrar verticalmente
-                              children: <Widget>[
-                                Text(
-                                  "Ubuntu Server",
-                                  style: MyTextSample.title(context)!.copyWith(
-                                    color: MyColorsSample.grey_80,
-                                  ),
-                                ),
-                                Container(height: 5),
-                                Text(
-                                  "191.168.18.32",
-                                  style: MyTextSample.body1(context)!.copyWith(
-                                    color: Colors.grey[500],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                  CustomIconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (_) => ConexionModal(conexion: null));
+                      },
+                      text: 'Nuevo Host',
+                      icon: Icons.add),
+                  SizedBox(height: 10),
+                  Wrap(
+                    spacing: 10,
+                    children: conexiones
+                        .map((e) => HostCard(
+                              logoPath: 'ubuntu.png',
+                              direccionIp: e.direccionip,
+                              nombre: e.nombre,
+                              password: e.password,
+                              usuariohost: e.usuario,
+                              idHost: e.id,
+                              estado: e.estado,
+                              owner: e.owner,
+                              v: e.v,
+                              fechaCreacion: e.fechaCreacion,
+                            ))
+                        .toList(),
+                  ),
                 ],
               ))
         ],

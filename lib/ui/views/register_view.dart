@@ -33,7 +33,7 @@ class RegisterView extends StatelessWidget {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Ingrese su nombre';
+                            return 'Ingrese su usuario';
                           }
                           return null;
                         },
@@ -41,8 +41,8 @@ class RegisterView extends StatelessWidget {
                             registerFormProvider.nombre = value,
                         style: TextStyle(color: Colors.black87),
                         decoration: CustomInputs.loginInputDecoration(
-                            hint: 'Ingrese su nombre',
-                            label: 'Nombre',
+                            hint: 'Ingrese su usuario',
+                            label: 'usuario',
                             icon: Icons.supervised_user_circle_sharp),
                       ),
                       SizedBox(

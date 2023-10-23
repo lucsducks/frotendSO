@@ -80,7 +80,7 @@ class _MobileBody extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/nos3.jpeg'),
+          image: AssetImage('assets/images/fon5.jpg'),
           fit: BoxFit.cover,
         ),
       ),
