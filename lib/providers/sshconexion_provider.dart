@@ -1,16 +1,23 @@
 import 'package:dashboardadmin/api/restApi.dart';
 import 'package:dashboardadmin/models/http/host_response.dart';
-import 'package:dashboardadmin/models/http/usuario_response.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 class sshConexionProvider extends ChangeNotifier {
   List<Conexiones> conexiones = [];
-
+  List<Conexiones> conexionUsuario = [];
+  late Conexiones conexion;
   getconexionesHost(String owner) async {
     final resp = await restApi.httpGet("/host/listar/$owner");
     final hostResponse = HostResponse.fromMap(resp);
     conexiones = hostResponse.conexiones;
+    notifyListeners();
+  }
+
+  getinformacionHost(String id) async {
+    final resp = await restApi.httpGet("/host/hostpersonal/$id");
+    final hostResponse = Conexiones.fromMap(resp);
+    conexion = hostResponse;
     notifyListeners();
   }
 
