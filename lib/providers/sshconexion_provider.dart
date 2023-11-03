@@ -22,12 +22,13 @@ class sshConexionProvider extends ChangeNotifier {
   }
 
   Future postConexion(String nombre, String usuario, String owner,
-      String direccionip, String password) async {
+      String direccionip, int port, String password) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'owner': owner,
       'direccionip': direccionip,
+      'port': port,
       'password': password
     };
 
@@ -44,12 +45,13 @@ class sshConexionProvider extends ChangeNotifier {
   }
 
   Future actualizarConexion(String nombre, String usuario, String id,
-      String direccionip, String password, String owner) async {
+      String direccionip, String password, int port, String owner) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'direccionip': direccionip,
-      'password': password
+      'password': password,
+      'port': port,
     };
     print(data);
     try {

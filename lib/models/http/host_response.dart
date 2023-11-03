@@ -33,6 +33,7 @@ class Conexiones {
   String owner;
   String usuario;
   String direccionip;
+  int port;
   String password;
   int v;
   String fechaCreacion;
@@ -44,6 +45,7 @@ class Conexiones {
     required this.owner,
     required this.usuario,
     required this.direccionip,
+    required this.port,
     required this.password,
     required this.v,
     required this.fechaCreacion,
@@ -56,6 +58,7 @@ class Conexiones {
         usuario = 'Sin usuario',
         direccionip = '0.0.0.0',
         password = '',
+        port = 22,
         v = 0, // Versión del documento inicial
         fechaCreacion = DateTime.now().toIso8601String();
   factory Conexiones.fromJson(String str) =>
@@ -70,6 +73,7 @@ class Conexiones {
         owner: json["owner"] ?? "",
         usuario: json["usuario"] ?? "",
         direccionip: json["direccionip"] ?? "",
+        port: json["port"] ?? 22,
         password: json["password"] ?? "",
         v: json["__v"] ?? 0,
         fechaCreacion: json["fechaCreacion"] ?? "",
@@ -82,6 +86,7 @@ class Conexiones {
         "owner": owner,
         "usuario": usuario,
         "direccionip": direccionip,
+        "port": port,
         "password": password,
         "__v": v,
         "fechaCreacion": fechaCreacion,

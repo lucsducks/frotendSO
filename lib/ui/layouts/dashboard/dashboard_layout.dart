@@ -20,7 +20,6 @@ class DashboardLayout extends StatelessWidget {
           if (size.width >= 700) Sidebar(scaffoldKey: _scaffoldKey),
           Expanded(
             child: Container(
-              color: Color.fromARGB(207, 255, 253, 253),
               child: child,
             ),
           ),

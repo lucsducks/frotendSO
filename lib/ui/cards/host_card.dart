@@ -3,6 +3,7 @@ import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
 import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
 import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class HostCard extends StatefulWidget {
   final String? password;
   final String? idHost;
   final String? direccionIp;
+  final int? port;
   final Color? cardColor;
   final Color? textColor;
   final VoidCallback? onTap;
@@ -20,14 +22,18 @@ class HostCard extends StatefulWidget {
   final String fechaCreacion;
   final bool estado;
   final String owner;
+  final IconData? iconData;
+
   const HostCard({
     Key? key,
-    required this.logoPath,
+    this.logoPath = 'server.png',
+    this.iconData = Icons.window,
     required this.nombre,
     required this.idHost,
     required this.usuariohost,
     required this.password,
     required this.direccionIp,
+    required this.port,
     required this.estado,
     required this.owner,
     required this.v,
@@ -51,6 +57,7 @@ class _HostCardState extends State<HostCard> {
         nombre: widget.nombre!,
         usuario: widget.usuariohost!,
         direccionip: widget.direccionIp!,
+        port: widget.port!,
         password: widget.password!,
         estado: widget.estado,
         owner: widget.owner,
@@ -83,14 +90,16 @@ class _HostCardState extends State<HostCard> {
                         // Imagen
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: Image.asset(
-                            ImgSample.get(widget.logoPath!),
-                            height:
+                          child: Icon(
+                            widget
+                                .iconData!, // Reemplaza "some_icon" con el ícono que desees.
+                            size:
                                 60, // Ajusta para que sea proporcional al height de la tarjeta
-                            width: 60,
-                            fit: BoxFit.cover,
+                            color: Colors
+                                .blue, // Elige el color que desees para el ícono.
                           ),
                         ),
+
                         Container(width: 10), // Espacio entre imagen y texto
                         // Textos
                         Column(
@@ -119,8 +128,7 @@ class _HostCardState extends State<HostCard> {
                       children: [
                         IconButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                                backgroundColor: Colors.transparent,
+                            showCupertinoModalPopup(
                                 context: context,
                                 builder: (_) =>
                                     ConexionModal(conexion: conexion));
