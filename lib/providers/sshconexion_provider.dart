@@ -1,12 +1,12 @@
 import 'package:dashboardadmin/api/restApi.dart';
 import 'package:dashboardadmin/models/http/host_response.dart';
-import 'package:dashboardadmin/models/http/usuario_response.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 class sshConexionProvider extends ChangeNotifier {
   List<Conexiones> conexiones = [];
-
+  List<Conexiones> conexionUsuario = [];
+  late Conexiones conexion = Conexiones.initial();
   getconexionesHost(String owner) async {
     final resp = await restApi.httpGet("/host/listar/$owner");
     final hostResponse = HostResponse.fromMap(resp);
@@ -14,13 +14,21 @@ class sshConexionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getinformacionHost(String id) async {
+    final resp = await restApi.httpGet("/host/hostpersonal/$id");
+    final hostResponse = Conexiones.fromMap(resp);
+    conexion = hostResponse;
+    notifyListeners();
+  }
+
   Future postConexion(String nombre, String usuario, String owner,
-      String direccionip, String password) async {
+      String direccionip, int port, String password) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'owner': owner,
       'direccionip': direccionip,
+      'port': port,
       'password': password
     };
 
@@ -37,12 +45,13 @@ class sshConexionProvider extends ChangeNotifier {
   }
 
   Future actualizarConexion(String nombre, String usuario, String id,
-      String direccionip, String password, String owner) async {
+      String direccionip, String password, int port, String owner) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'direccionip': direccionip,
-      'password': password
+      'password': password,
+      'port': port,
     };
     print(data);
     try {

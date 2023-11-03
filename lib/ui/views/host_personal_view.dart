@@ -1,7 +1,12 @@
+import 'package:dashboardadmin/providers/sshconexion_provider.dart';
+import 'package:dashboardadmin/providers/terminal_provider.dart';
 import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/ui/cards/white_card.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:xterm/xterm.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HostPersonalView extends StatefulWidget {
   final String hostid;
@@ -15,109 +20,135 @@ class HostPersonalView extends StatefulWidget {
 }
 
 class _HostPersonalViewState extends State<HostPersonalView> {
-  final TextEditingController _controller = TextEditingController();
-  final List<String> _output = [];
-  final _scrollController = ScrollController();
   final focusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    initSSHConnections();
+  }
+
+  void initSSHConnections() {
+    final sshProvider =
+        Provider.of<sshConexionProvider>(context, listen: false);
+    sshProvider.getinformacionHost(widget.hostid).then((_) {
+      final conexionHost = sshProvider.conexion;
+      if (!Provider.of<TerminalProvider>(context, listen: false).isConnected) {
+        Provider.of<TerminalProvider>(context, listen: false).initTerminal(
+          host: conexionHost.direccionip,
+          port: 22,
+          username: conexionHost.usuario,
+          password: conexionHost.password,
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        physics: ClampingScrollPhysics(),
-        children: [
-          Text('Terminal View', style: CustomLabels.h1),
-          SizedBox(height: 10),
-          WhiteCard(
-            title: 'Flutter Terminal',
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.black,
-                  height: MediaQuery.sizeOf(context).height * 0.7,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _output.length,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        _output[index],
-                        style: TextStyle(
-                            fontFamily: 'Courier',
-                            fontSize: 16,
-                            color: Colors.green),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  color: Colors.grey[800],
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'flutter@demo:~\$ ',
-                        style: TextStyle(
-                            fontFamily: 'Courier',
-                            fontSize: 16,
-                            color: Colors.green),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          focusNode: focusNode,
-                          controller: _controller,
-                          onFieldSubmitted: (value) {
-                            _processCommand(value);
-                            _controller.clear();
-                            focusNode.requestFocus();
-                          },
-                          style: TextStyle(
-                              fontFamily: 'Courier',
-                              fontSize: 16,
-                              color: Colors.green),
-                          cursorColor: Colors.green,
-                          decoration: InputDecoration.collapsed(
-                              hintText: '', border: InputBorder.none),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return DefaultTabController(
+      length: 2, // Define la cantidad de pestañas que necesites aquí
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Servidor 1'),
+              Tab(text: 'Servidor 2'),
+              // Añade más pestañas según necesites
+            ],
           ),
-        ],
+          title: Text('Terminal View', style: CustomLabels.h1),
+        ),
+        body: TabBarView(
+          children: [
+            buildTerminalView(), // para el servidor 1
+            buildTerminalView(), // para el servidor 2
+            // Añade más vistas según necesites
+          ],
+        ),
       ),
     );
   }
 
-  void _processCommand(String command) {
-    setState(() {
-      bool primrera = true;
-
-      if (primrera == true) {
-        _output.add('flutter@demo:~\$ $command');
-        primrera = false;
-      }
-      if (command == 'clear') {
-        _output.clear();
-      }
-      if (command == 'exit') {
-        Future.delayed(Duration(seconds: 1), () {
-          NavigationService.replaceTo('/dashboard');
+  Widget buildTerminalView() {
+    final terminalProvider = Provider.of<TerminalProvider>(context);
+    if (!terminalProvider.isConnected && terminalProvider.isExit) {
+      terminalProvider.isExit = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(seconds: 1), () {
+          NavigationService.navigateTo('/dashboard');
         });
-      }
+      });
+    }
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Expanded(
+          child: terminalProvider.isConnected
+              ? TerminalView(terminalProvider.terminal)
+              : buildConnectingView(),
+        ),
+      ],
+    );
+  }
 
-      if (command == 'ls') {
-        _output.add(
-            'Descargas  Documentos  Escritorio  Imágenes  linux-6.5.7  Música  Plantillas  Público  Vídeos');
-      }
-
-      if (command == 'ls Escritorio') {
-        _output.add('leeme.txt  script.js');
-      }
-      // Auto-scroll to the bottom
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 200), curve: Curves.easeOut);
-    });
+  Widget buildConnectingView() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: [0.1, 0.5, 0.9],
+          colors: [
+            Colors.blue[700]!,
+            Colors.blue[500]!,
+            Colors.blue[300]!,
+          ],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(60),
+                shadowColor: Colors.black38,
+                elevation: 10,
+              ),
+              onPressed: () {},
+              child: FaIcon(
+                FontAwesomeIcons.dashboard,
+                color: Colors.blue[700],
+                size: 50.0,
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SpinKitThreeBounce(
+              color: Colors.white,
+              size: 30.0,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Verificando...',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.5,
+                shadows: [
+                  Shadow(
+                    blurRadius: 8.0,
+                    color: Colors.black38,
+                    offset: Offset(2.0, 2.0),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

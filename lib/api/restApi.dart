@@ -6,8 +6,8 @@ class restApi {
   static Dio _dio = Dio();
   static void configureDio() {
     // Base del url
-    _dio.options.baseUrl = 'http://161.132.55.27:3000/api';;
 
+    _dio.options.baseUrl = 'http://161.132.55.27:3000/api';
     // Configurar Headers
     _dio.options.headers = {
       'x-token': LocalStorage.prefs.getString('token') ?? ''

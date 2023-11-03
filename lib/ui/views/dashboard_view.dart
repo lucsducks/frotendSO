@@ -6,6 +6,7 @@ import 'package:dashboardadmin/ui/cards/host_card.dart';
 import 'package:dashboardadmin/ui/cards/white_card.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,14 +36,14 @@ class _DashboardViewState extends State<DashboardView> {
           Text('Dashboard View', style: CustomLabels.h1),
           SizedBox(height: 10),
           WhiteCard(
+              margin: EdgeInsets.zero,
               title: user.nombre,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomIconButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
+                        showCupertinoModalPopup(
                             context: context,
                             builder: (_) => ConexionModal(conexion: null));
                       },
@@ -53,9 +54,9 @@ class _DashboardViewState extends State<DashboardView> {
                     spacing: 10,
                     children: conexiones
                         .map((e) => HostCard(
-                              logoPath: 'ubuntu.png',
                               direccionIp: e.direccionip,
                               nombre: e.nombre,
+                              port: e.port,
                               password: e.password,
                               usuariohost: e.usuario,
                               idHost: e.id,

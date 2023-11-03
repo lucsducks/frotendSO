@@ -7,6 +7,7 @@ class WhiteCard extends StatelessWidget {
   final double? width;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? margin;
 
   const WhiteCard({
     Key? key,
@@ -14,6 +15,7 @@ class WhiteCard extends StatelessWidget {
     this.title,
     this.width,
     this.padding = const EdgeInsets.all(10),
+    this.margin = const EdgeInsets.all(8),
     this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class WhiteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      margin: EdgeInsets.all(8),
+      margin: margin,
       padding: padding,
       decoration: buildBoxDecoration(borderRadius!),
       child: Column(
