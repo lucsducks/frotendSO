@@ -1,29 +1,24 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:dartssh2/dartssh2.dart';
 import 'package:xterm/xterm.dart';
 
-class TerminalProvider extends ChangeNotifier {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late Terminal terminal;
+class SSHConnection {
+  Terminal terminal;
+  SSHClient? sshClient;
   bool isConnected = false;
   bool isExit = false;
-  SSHClient? sshClient;
-  Function onCommandEntered = () {};
 
-  TerminalProvider() {
-    terminal = Terminal();
-  }
+  SSHConnection() : terminal = Terminal();
 
-  void initTerminal({
+  Future<void> init({
     required String host,
     required int port,
     required String username,
     required String password,
   }) async {
     try {
-      isExit = false;
       terminal.write('Connecting...\r\n');
 
       sshClient = SSHClient(
@@ -61,15 +56,20 @@ class TerminalProvider extends ChangeNotifier {
       session.done.then((_) {
         isConnected = false;
         isExit = true;
-        notifyListeners();
       });
 
       isConnected = true;
-      notifyListeners();
     } catch (e) {
       terminal.write('Error: $e\r\n');
       isConnected = false;
-      notifyListeners();
     }
+  }
+
+  void dispose() {
+    if (sshClient != null) {
+      sshClient!.close();
+    }
+    isConnected = false;
+    isExit = true;
   }
 }

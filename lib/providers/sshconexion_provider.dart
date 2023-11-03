@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class sshConexionProvider extends ChangeNotifier {
   List<Conexiones> conexiones = [];
   List<Conexiones> conexionUsuario = [];
-  late Conexiones conexion;
+  late Conexiones conexion = Conexiones.initial();
   getconexionesHost(String owner) async {
     final resp = await restApi.httpGet("/host/listar/$owner");
     final hostResponse = HostResponse.fromMap(resp);

@@ -48,7 +48,16 @@ class Conexiones {
     required this.v,
     required this.fechaCreacion,
   });
-
+  Conexiones.initial()
+      : estado = false, // false ya que suponemos que no está conectado
+        id = '0', // Un valor predeterminado que indica que no hay un ID válido
+        nombre = 'Sin nombre',
+        owner = 'Sin propietario',
+        usuario = 'Sin usuario',
+        direccionip = '0.0.0.0',
+        password = '',
+        v = 0, // Versión del documento inicial
+        fechaCreacion = DateTime.now().toIso8601String();
   factory Conexiones.fromJson(String str) =>
       Conexiones.fromMap(json.decode(str));
 
