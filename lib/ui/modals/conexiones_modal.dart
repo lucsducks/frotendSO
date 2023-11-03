@@ -30,6 +30,8 @@ class _ConexionModalState extends State<ConexionModal> {
     'assets/icons/sound_file.svg',
     'assets/icons/server.svg',
     'assets/icons/excel_file.svg',
+    'assets/icons/windows.svg',
+    'assets/icons/ubuntu.svg',
   ];
   String? selectedIconPath;
 
@@ -43,7 +45,7 @@ class _ConexionModalState extends State<ConexionModal> {
     password = widget.conexion?.password ?? '';
     direccionip = widget.conexion?.direccionip ?? '';
     port = (widget.conexion?.port ?? 22).toString();
-    selectedIconPath = 'assets/icons/server.svg';
+    selectedIconPath = widget.conexion?.img ?? 'assets/icons/server.svg';
   }
 
   @override
@@ -59,7 +61,7 @@ class _ConexionModalState extends State<ConexionModal> {
       child: Align(
         alignment: Alignment.topRight,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           height: MediaQuery.of(context).size.height,
           width: screenWidth < 700 ? screenWidth : 350,
           decoration: buildBoxDecoration(),
@@ -91,7 +93,7 @@ class _ConexionModalState extends State<ConexionModal> {
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.blue,
                     ),
@@ -110,11 +112,11 @@ class _ConexionModalState extends State<ConexionModal> {
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
-                      TextStyle(color: const Color.fromARGB(153, 62, 61, 61)),
+                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
                   labelStyle:
-                      TextStyle(color: const Color.fromARGB(179, 66, 65, 65)),
+                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: TextStyle(color: const Color.fromARGB(255, 78, 78, 78)),
+                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
               TextFormField(
                 initialValue: widget.conexion?.direccionip ?? '',
@@ -127,11 +129,11 @@ class _ConexionModalState extends State<ConexionModal> {
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
-                      TextStyle(color: const Color.fromARGB(153, 62, 61, 61)),
+                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
                   labelStyle:
-                      TextStyle(color: const Color.fromARGB(179, 66, 65, 65)),
+                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: TextStyle(color: const Color.fromARGB(255, 78, 78, 78)),
+                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
               TextFormField(
                 initialValue: (widget.conexion?.port ?? '22').toString(),
@@ -144,11 +146,11 @@ class _ConexionModalState extends State<ConexionModal> {
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
-                      TextStyle(color: const Color.fromARGB(153, 62, 61, 61)),
+                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
                   labelStyle:
-                      TextStyle(color: const Color.fromARGB(179, 66, 65, 65)),
+                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: TextStyle(color: const Color.fromARGB(255, 78, 78, 78)),
+                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
               TextFormField(
                 initialValue: widget.conexion?.usuario ?? '',
@@ -161,11 +163,11 @@ class _ConexionModalState extends State<ConexionModal> {
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
-                      TextStyle(color: const Color.fromARGB(153, 62, 61, 61)),
+                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
                   labelStyle:
-                      TextStyle(color: const Color.fromARGB(179, 66, 65, 65)),
+                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: TextStyle(color: const Color.fromARGB(255, 78, 78, 78)),
+                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
               TextFormField(
                 keyboardType: TextInputType.visiblePassword,
@@ -179,13 +181,13 @@ class _ConexionModalState extends State<ConexionModal> {
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
-                      TextStyle(color: const Color.fromARGB(153, 62, 61, 61)),
+                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
                   labelStyle:
-                      TextStyle(color: const Color.fromARGB(179, 66, 65, 65)),
+                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: TextStyle(color: const Color.fromARGB(255, 78, 78, 78)),
+                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomFilledButton(
                 onPressed: () async {
                   int? portNumber = int.tryParse(port);
@@ -197,14 +199,22 @@ class _ConexionModalState extends State<ConexionModal> {
                   if (id == null) {
                     try {
                       owner = user.id;
-                      print(port);
+                      print(selectedIconPath);
 
-                      await conexionHostProvider.postConexion(nombre, usuario,
-                          owner, direccionip, portNumber, password);
+                      await conexionHostProvider.postConexion(
+                          nombre,
+                          usuario,
+                          owner,
+                          direccionip,
+                          portNumber,
+                          password,
+                          selectedIconPath!);
                       NotificationsService.showSnackbar('Creado Exitosamente!');
 
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } catch (e) {
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                       NotificationsService.showSnackbarError(e.toString());
                     }
@@ -217,12 +227,15 @@ class _ConexionModalState extends State<ConexionModal> {
                           direccionip,
                           password,
                           portNumber,
-                          owner);
+                          owner,
+                          selectedIconPath!);
                       NotificationsService.showSnackbar(
                           'Actualizado Exitosamente!');
 
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } catch (e) {
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                       NotificationsService.showSnackbarError(e.toString());
                     }
@@ -238,7 +251,7 @@ class _ConexionModalState extends State<ConexionModal> {
     );
   }
 
-  BoxDecoration buildBoxDecoration() => BoxDecoration(
+  BoxDecoration buildBoxDecoration() => const BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(color: Colors.black26, spreadRadius: 1, blurRadius: 5)

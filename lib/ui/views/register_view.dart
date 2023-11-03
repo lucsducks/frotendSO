@@ -12,7 +12,6 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = MediaQuery.of(context).size.width < 600;
     final authProvider = Provider.of<AuthProvider>(context);
     return ChangeNotifierProvider(
         create: (_) => RegisterFormProvider(),

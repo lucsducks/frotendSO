@@ -5,6 +5,7 @@ import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
 import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class HostCard extends StatefulWidget {
@@ -12,6 +13,7 @@ class HostCard extends StatefulWidget {
   final String? nombre;
   final String? usuariohost;
   final String? password;
+  final String? img;
   final String? idHost;
   final String? direccionIp;
   final int? port;
@@ -32,6 +34,7 @@ class HostCard extends StatefulWidget {
     required this.idHost,
     required this.usuariohost,
     required this.password,
+    required this.img,
     required this.direccionIp,
     required this.port,
     required this.estado,
@@ -58,6 +61,7 @@ class _HostCardState extends State<HostCard> {
         usuario: widget.usuariohost!,
         direccionip: widget.direccionIp!,
         port: widget.port!,
+        img: widget.img!,
         password: widget.password!,
         estado: widget.estado,
         owner: widget.owner,
@@ -90,13 +94,14 @@ class _HostCardState extends State<HostCard> {
                         // Imagen
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: Icon(
+                          child: SvgPicture.asset(
                             widget
-                                .iconData!, // Reemplaza "some_icon" con el ícono que desees.
-                            size:
+                                .img!, // Reemplaza "some_icon" con el ícono que desees.
+                            height: 60,
+                            width:
                                 60, // Ajusta para que sea proporcional al height de la tarjeta
-                            color: Colors
-                                .blue, // Elige el color que desees para el ícono.
+                            color: Color.fromARGB(255, 84, 168,
+                                237), // Elige el color que desees para el ícono.
                           ),
                         ),
 

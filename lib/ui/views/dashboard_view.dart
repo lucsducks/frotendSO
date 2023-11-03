@@ -57,6 +57,7 @@ class _DashboardViewState extends State<DashboardView> {
                               direccionIp: e.direccionip,
                               nombre: e.nombre,
                               port: e.port,
+                              img: e.img,
                               password: e.password,
                               usuariohost: e.usuario,
                               idHost: e.id,

@@ -33,6 +33,7 @@ class Conexiones {
   String owner;
   String usuario;
   String direccionip;
+  String img;
   int port;
   String password;
   int v;
@@ -44,6 +45,7 @@ class Conexiones {
     required this.nombre,
     required this.owner,
     required this.usuario,
+    required this.img,
     required this.direccionip,
     required this.port,
     required this.password,
@@ -57,6 +59,7 @@ class Conexiones {
         owner = 'Sin propietario',
         usuario = 'Sin usuario',
         direccionip = '0.0.0.0',
+        img = 'assets/icons/server.svg',
         password = '',
         port = 22,
         v = 0, // Versión del documento inicial
@@ -72,6 +75,7 @@ class Conexiones {
         nombre: json["nombre"] ?? "",
         owner: json["owner"] ?? "",
         usuario: json["usuario"] ?? "",
+        img: json["img"] ?? "",
         direccionip: json["direccionip"] ?? "",
         port: json["port"] ?? 22,
         password: json["password"] ?? "",
@@ -86,6 +90,7 @@ class Conexiones {
         "owner": owner,
         "usuario": usuario,
         "direccionip": direccionip,
+        "img": img,
         "port": port,
         "password": password,
         "__v": v,

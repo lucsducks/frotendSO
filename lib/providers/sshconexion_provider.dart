@@ -22,14 +22,15 @@ class sshConexionProvider extends ChangeNotifier {
   }
 
   Future postConexion(String nombre, String usuario, String owner,
-      String direccionip, int port, String password) async {
+      String direccionip, int port, String password, String img) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'owner': owner,
       'direccionip': direccionip,
       'port': port,
-      'password': password
+      'password': password,
+      'img': img
     };
 
     try {
@@ -44,16 +45,23 @@ class sshConexionProvider extends ChangeNotifier {
     }
   }
 
-  Future actualizarConexion(String nombre, String usuario, String id,
-      String direccionip, String password, int port, String owner) async {
+  Future actualizarConexion(
+      String nombre,
+      String usuario,
+      String id,
+      String direccionip,
+      String password,
+      int port,
+      String owner,
+      String img) async {
     final data = {
       'nombre': nombre,
       'usuario': usuario,
       'direccionip': direccionip,
       'password': password,
       'port': port,
+      'img': img,
     };
-    print(data);
     try {
       await restApi.put('/host/$id', data);
 
