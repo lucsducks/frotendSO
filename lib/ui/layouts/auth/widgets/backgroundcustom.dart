@@ -5,29 +5,33 @@ class BackgroundCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: buidBackground(),
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Center(
-                // child: Image(
-                //   image: AssetImage('sumaq.png'),
-                //   width: 700,
-                // ),
-                ),
-          ),
+    final size = MediaQuery.of(context).size;
+    bool isResponsive = MediaQuery.of(context).size.width > 1300;
+    bool isMovil = MediaQuery.of(context).size.width > 700;
+    return Container(
+        width: isMovil ? 600 : size.width,
+        height: isResponsive ? 700 : 110,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromARGB(255, 79, 191, 255),
+                Color.fromARGB(255, 47, 149, 252),
+                Color.fromARGB(255, 10, 125, 243),
+                Color.fromARGB(255, 12, 110, 246),
+                Color.fromARGB(255, 7, 78, 245)
+              ]),
         ),
-      ),
-    );
-  }
-
-  BoxDecoration buidBackground() {
-    return const BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage('assets/images/fon3.png'), fit: BoxFit.cover),
-    );
+        child: Center(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: isResponsive
+                    ? const Image(
+                        image: AssetImage('assets/images/Logo-horizontal.png'),
+                      )
+                    : const Image(
+                        image: AssetImage('assets/images/Logo-vertical.png'),
+                      ))));
   }
 }

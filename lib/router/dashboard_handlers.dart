@@ -16,7 +16,7 @@ class DashboardHandlers {
     Provider.of<SideMenuProvider>(context, listen: false)
         .setCurrentPageUrl(Flurorouter.dashboardRoute);
     if (authProvider.authStatus != AuthStatus.authenticated) {
-      return const LoginView();
+      return LoginView();
     } else {
       return DashboardView();
     }

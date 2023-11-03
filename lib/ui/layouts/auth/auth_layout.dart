@@ -1,5 +1,4 @@
 import 'package:dashboardadmin/ui/layouts/auth/widgets/backgroundcustom.dart';
-import 'package:dashboardadmin/ui/layouts/auth/widgets/custom_title.dart';
 import 'package:flutter/material.dart';
 
 class AuthLayout extends StatelessWidget {
@@ -13,7 +12,7 @@ class AuthLayout extends StatelessWidget {
         body: Scrollbar(
       child: ListView(
         children: [
-          (size.width > 1000)
+          (size.width > 700)
               ? _DesktopBody(child: child)
               : _MobileBody(child: child),
         ],
@@ -30,39 +29,59 @@ class _DesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double containerWidth = (size.width > 1300) ? 600 : 480;
+    double widthResponsive = (size.width > 1300) ? 1200 : 600;
+    bool isResponsive  = MediaQuery.of(context).size.width > 1300;
     return Container(
+      height: size.height,
+      width: size.width,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/fon5.jpg'), //fondo
-          fit: BoxFit.cover,
-        ),
+        gradient: LinearGradient(colors: [
+          Color.fromARGB(255, 47, 149, 252),
+          Color.fromARGB(255, 79, 191, 255),
+          Colors.white
+        ]),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(50.0),
+      child: Center(
         child: Container(
-          width: size.width - 50,
-          height: size.height - 100,
-          color: Colors.white,
-          child: Row(
-            children: [
-              BackgroundCustom(),
-              Container(
-                width: containerWidth,
-                height: double.infinity,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    CustomTitle(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Expanded(child: child),
-                  ],
-                ),
-              )
+          width: widthResponsive,
+          height: 700,
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(80, 0, 0, 0),
+                offset: Offset(10, 10),
+                blurRadius: 10.0,
+                spreadRadius: 2.0,
+              ),
             ],
           ),
+          child: isResponsive
+          ? Row(
+            children: [
+              const BackgroundCustom(),
+              Expanded(
+                child: Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: child,
+                ),
+              ))
+            ],
+          )
+          : Column(
+            children: [
+              const BackgroundCustom(),
+              Expanded(
+                child: Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: child,
+                ),
+              ))
+            ],
+          )
         ),
       ),
     );
@@ -77,26 +96,19 @@ class _MobileBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/fon5.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-        child: Container(
-          width: size.width - 40,
-          height: size.height - 160,
-          color: Colors.white,
-          child: Column(
-            children: [
-              const CustomTitle(),
-              Expanded(child: child),
-            ],
-          ),
-        ),
+    return SizedBox(
+      height: size.height,
+      width: size.width,
+      child: Column(
+        children: [
+          const BackgroundCustom(),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: child
+            ),)
+        ],
       ),
     );
   }

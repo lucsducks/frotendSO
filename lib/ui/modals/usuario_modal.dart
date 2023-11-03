@@ -1,7 +1,7 @@
 import 'package:dashboardadmin/models/usuario.dart';
 import 'package:dashboardadmin/providers/usuario_provider.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/buttons/custom_outlined_button.dart';
+import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
 import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +76,7 @@ class _UsuarioModalState extends State<UsuarioModal> {
             ),
             style: TextStyle(color: Colors.white),
           ),
-          CustomOutlinedButton(
+          CustomFilledButton(
             onPressed: () async {
               try {
                 if (id == null) {

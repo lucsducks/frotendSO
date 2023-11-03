@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomInputs {
   static InputDecoration loginInputDecoration({
@@ -7,17 +8,34 @@ class CustomInputs {
     required IconData icon,
   }) {
     return InputDecoration(
-      border: OutlineInputBorder(
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        border: const OutlineInputBorder(),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-              color: Color.fromRGBO(227, 232, 255, 0).withOpacity(0.3))),
-      enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: const Color.fromRGBO(158, 159, 178, 0).withOpacity(0.3))),
-      hintText: hint,
-      labelText: label,
-      prefixIcon:
-          Icon(icon, color: Color.fromRGBO(158, 159, 178, 0).withOpacity(0.3)),
-    );
+              color:
+                  Color.fromARGB(255, 10, 125, 243)), // Color del borde en foco
+        ),
+        errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 247, 36, 36))),
+        focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Color.fromARGB(
+                    255, 10, 125, 243))), // Color del borde en foco      ),
+        hintText: hint,
+        hintStyle: const TextStyle(
+            color: Color.fromARGB(255, 209, 209, 209), fontSize: 16),
+        labelText: label,
+        labelStyle: GoogleFonts.poppins(
+          color: Colors.blue,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: const Color.fromARGB(255, 209, 209, 209),
+        ));
   }
 
   static InputDecoration searchInputDecoration(
@@ -27,7 +45,7 @@ class CustomInputs {
         enabledBorder: InputBorder.none,
         hintText: hint,
         prefixIcon: Icon(icon, color: Colors.grey),
-        labelStyle: TextStyle(color: Colors.grey),
-        hintStyle: TextStyle(color: Colors.grey));
+        labelStyle: const TextStyle(color: Colors.blue),
+        hintStyle: const TextStyle(color: Colors.grey));
   }
 }

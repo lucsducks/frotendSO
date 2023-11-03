@@ -11,7 +11,7 @@ class AdminHandlers {
     final authProvider = Provider.of<AuthProvider>(context!);
     print(authProvider.authStatus);
     if (authProvider.authStatus == AuthStatus.notAuthenticated) {
-      return const LoginView();
+      return LoginView();
     } else {
       return DashboardView();
     }

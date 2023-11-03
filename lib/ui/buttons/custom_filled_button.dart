@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class CustomOutlinedButton extends StatelessWidget {
+class CustomFilledButton extends StatelessWidget {
   final Function onPressed;
   final String text;
   final Color color;
   final bool isFilled;
   final IconData? icon;
 
-  const CustomOutlinedButton({
+  const CustomFilledButton({
     Key? key,
     required this.onPressed,
     required this.text,
@@ -20,31 +21,31 @@ class CustomOutlinedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double redi = (size.width < 600) ? 60 : 20;
-    return Container(
-      width: 430,
-      child: OutlinedButton(
+    return SizedBox(
+      height: 60,
+      width: double.infinity,
+      child: FilledButton(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           ),
-          side: MaterialStateProperty.all(
-            BorderSide(color: color),
-          ),
-          backgroundColor: MaterialStateProperty.all(
-            isFilled ? color.withOpacity(0.3) : Colors.transparent,
-          ),
+          backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 10, 125, 243)),
         ),
         onPressed: () => onPressed(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: redi, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: redi, vertical: 15),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) Icon(icon, color: color),
-              if (icon != null) SizedBox(width: 10),
+              if (icon != null) Icon(icon, color: Colors.white),
+              if (icon != null) const SizedBox(width: 10),
               Text(
                 text,
-                style: TextStyle(fontSize: 16, color: color),
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),
               ),
             ],
           ),

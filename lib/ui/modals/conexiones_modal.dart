@@ -2,7 +2,7 @@ import 'package:dashboardadmin/models/http/host_response.dart';
 import 'package:dashboardadmin/providers/auth_provider.dart';
 import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/buttons/custom_outlined_button.dart';
+import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
 import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +130,7 @@ class _ConexionModalState extends State<ConexionModal> {
             style: TextStyle(color: Colors.white),
           ),
           SizedBox(height: 20),
-          CustomOutlinedButton(
+          CustomFilledButton(
             onPressed: () async {
               if (id == null) {
                 try {
