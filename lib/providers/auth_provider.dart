@@ -20,6 +20,11 @@ class AuthProvider extends ChangeNotifier {
     restApi.post('/auth/login', data).then((json) {
       final authResponse = AuthResponse.fromMap(json);
       user = authResponse.usuario;
+      if (user!.verificado == false) {
+        NotificationsService.showSnackbarError('Usuario no verificado');
+        resend(email);
+        return NavigationService.replaceTo(Flurorouter.verificationRoute);
+      }
       authStatus = AuthStatus.authenticated;
       LocalStorage.prefs.setString('token', authResponse.token);
       NavigationService.replaceTo(Flurorouter.dashboardRoute);
@@ -27,23 +32,54 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }).catchError((e) {
       NotificationsService.showSnackbarError(e.toString());
-      // if (e is Map && e.containsKey('errors')) {
-      //   final errorMsg = e['errors'][0]['msg'];
-      //   NotificationsService.showSnackbarError(errorMsg);
-      // } else {
-      //   NotificationsService.showSnackbarError('Hable con el administrador');
-      // }
     });
   }
 
   register(String email, String password, String nombre) {
     final data = {'nombre': nombre, 'correo': email, 'password': password};
+    debugPrint("data$data");
     restApi.post('/usuarios', data).then((json) {
+      LocalStorage.prefs.setString('correoPersonal', email);
+      NavigationService.replaceTo(Flurorouter.verificationRoute);
+      restApi.configureDio();
+      notifyListeners();
+    }).catchError((e) {
+      debugPrint("error $e");
+      if (e is Map && e.containsKey('errors')) {
+        final errorMsg = e['errors'][0]['msg'];
+        NotificationsService.showSnackbarError(errorMsg);
+      } else {
+        NotificationsService.showSnackbarError('Hable con el administrador');
+      }
+    });
+  }
+
+  verification(String codigoVerificacion) {
+    final data = {
+      'codigoVerificacion': codigoVerificacion,
+      'correo': LocalStorage.prefs.getString('correoPersonal')
+    };
+    restApi.post('/usuarios/verify', data).then((json) {
       final authResponse = AuthResponse.fromMap(json);
       user = authResponse.usuario;
       authStatus = AuthStatus.authenticated;
       LocalStorage.prefs.setString('token', authResponse.token);
       NavigationService.replaceTo(Flurorouter.dashboardRoute);
+      restApi.configureDio();
+      notifyListeners();
+    }).catchError((e) {
+      if (e is Map && e.containsKey('errors')) {
+        final errorMsg = e['errors'][0]['msg'];
+        NotificationsService.showSnackbarError(errorMsg);
+      } else {
+        NotificationsService.showSnackbarError('Hable con el administrador');
+      }
+    });
+  }
+
+  resend(String correo) {
+    final data = {'correo': correo};
+    restApi.post('/usuarios/resend', data).then((json) {
       restApi.configureDio();
       notifyListeners();
     }).catchError((e) {

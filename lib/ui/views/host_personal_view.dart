@@ -36,7 +36,7 @@ class _HostPersonalViewState extends State<HostPersonalView> {
       if (!Provider.of<TerminalProvider>(context, listen: false).isConnected) {
         Provider.of<TerminalProvider>(context, listen: false).initTerminal(
           host: conexionHost.direccionip,
-          port: 22,
+          port: conexionHost.port,
           username: conexionHost.usuario,
           password: conexionHost.password,
         );

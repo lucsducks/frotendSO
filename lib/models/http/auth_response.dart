@@ -32,6 +32,7 @@ class Usuario {
   Usuario({
     required this.rol,
     required this.estado,
+    required this.verificado,
     required this.id,
     required this.nombre,
     required this.correo,
@@ -41,6 +42,7 @@ class Usuario {
 
   String rol;
   bool estado;
+  bool verificado;
   String id;
   String nombre;
   String correo;
@@ -53,7 +55,8 @@ class Usuario {
 
   factory Usuario.fromMap(Map<String, dynamic> json) => Usuario(
         rol: json["rol"] ?? "",
-        estado: json["estado"] ?? true,
+        estado: json["estado"] ?? false,
+        verificado: json["verificado"] ?? false,
         id: json["_id"] ?? "",
         nombre: json["nombre"] ?? "",
         correo: json["correo"] ?? "",
@@ -66,6 +69,7 @@ class Usuario {
         "estado": estado,
         "_id": id,
         "nombre": nombre,
+        "verificado": verificado,
         "correo": correo,
         "fechaCreacion": fechaCreacion.toIso8601String(),
         "__v": v,

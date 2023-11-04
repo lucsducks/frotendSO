@@ -10,6 +10,7 @@ class Flurorouter {
   // Auth Router
   static String loginRoute = '/auth/login';
   static String registerRoute = '/auth/register';
+  static String verificationRoute = '/auth/verification';
 
   static String dashboardRoute = '/dashboard';
   static String hostperonalRoute = '/dashboard/host/:hostid/owner/:ownerid';
@@ -25,6 +26,9 @@ class Flurorouter {
         handler: AdminHandlers.login, transitionType: TransitionType.none);
     router.define(registerRoute,
         handler: AdminHandlers.register, transitionType: TransitionType.none);
+    router.define(verificationRoute,
+        handler: AdminHandlers.verification,
+        transitionType: TransitionType.none);
 
     // Dashboard
     router.define(dashboardRoute,

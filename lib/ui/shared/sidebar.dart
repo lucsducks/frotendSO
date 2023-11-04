@@ -53,10 +53,16 @@ class Sidebar extends StatelessWidget {
     return [
       TextSeparator(text: ' Main'),
       MenuItem(
-        text: 'Dashboard',
+        text: 'Hosts',
         icon: Icons.compass_calibration_outlined,
         onPressed: () => navigateTo(Flurorouter.dashboardRoute, context),
         isActive: sideMenuProvider.currentPage == Flurorouter.dashboardRoute,
+      ),
+      MenuItem(
+        text: 'SFTP',
+        icon: Icons.folder_open_outlined,
+        onPressed: () => navigateTo(Flurorouter.iconsRoute, context),
+        isActive: sideMenuProvider.currentPage == Flurorouter.iconsRoute,
       ),
       if (allowedRoles.any((role) => user.rol.contains(role)))
         MenuItem(

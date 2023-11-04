@@ -1,5 +1,6 @@
 import 'package:dashboardadmin/api/restApi.dart';
 import 'package:dashboardadmin/providers/auth_provider.dart';
+import 'package:dashboardadmin/providers/sftp_provider.dart';
 import 'package:dashboardadmin/providers/sidemenu_provider.dart';
 import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/providers/terminal_provider.dart';
@@ -51,6 +52,10 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           lazy: false,
           create: (_) => TerminalProvider(),
+        ),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) => SftpProvider(),
         ),
       ],
       child: MyApp(),
