@@ -28,6 +28,8 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     final user = Provider.of<AuthProvider>(context).user!;
     final conexiones = Provider.of<sshConexionProvider>(context).conexiones;
+    final conexionesUsuario =
+        Provider.of<sshConexionProvider>(context).conexionActivaUsuario;
     print(conexiones);
     return Container(
       child: ListView(
@@ -66,6 +68,12 @@ class _DashboardViewState extends State<DashboardView> {
                               v: e.v,
                               fechaCreacion: e.fechaCreacion,
                               onTap: () {
+                                Provider.of<sshConexionProvider>(context,
+                                        listen: false)
+                                    .newConexion(e.id);
+                                Provider.of<sshConexionProvider>(context,
+                                        listen: false)
+                                    .getTerminalProviderForHostId(e.id);
                                 NavigationService.replaceTo(
                                     '/dashboard/host/${e.id}/owner/${e.owner}');
                               },

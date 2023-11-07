@@ -1,154 +1,182 @@
+import 'dart:math';
+
 import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/providers/terminal_provider.dart';
 import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:dashboardadmin/ui/views/terminal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xterm/xterm.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HostPersonalView extends StatefulWidget {
   final String hostid;
   final String ownerid;
 
   const HostPersonalView(
-      {super.key, required this.hostid, required this.ownerid});
+      {Key? key, required this.hostid, required this.ownerid})
+      : super(key: key);
 
   @override
-  State<HostPersonalView> createState() => _HostPersonalViewState();
+  _HostPersonalViewState createState() => _HostPersonalViewState();
 }
 
-class _HostPersonalViewState extends State<HostPersonalView> {
-  final focusNode = FocusNode();
+class _HostPersonalViewState extends State<HostPersonalView>
+    with TickerProviderStateMixin {
+  TabController? _tabController;
+  List<String> _hostIds = [];
+  Map<String, Widget> _hostViews = {};
+  Map<String, TerminalProvider> terminalProviders = {};
 
   @override
   void initState() {
     super.initState();
-    initSSHConnections();
-  }
-
-  void initSSHConnections() {
-    final sshProvider =
-        Provider.of<sshConexionProvider>(context, listen: false);
-    sshProvider.getinformacionHost(widget.hostid).then((_) {
-      final conexionHost = sshProvider.conexion;
-      if (!Provider.of<TerminalProvider>(context, listen: false).isConnected) {
-        Provider.of<TerminalProvider>(context, listen: false).initTerminal(
-          host: conexionHost.direccionip,
-          port: conexionHost.port,
-          username: conexionHost.usuario,
-          password: conexionHost.password,
-        );
-      }
-    });
+    _hostIds = Provider.of<sshConexionProvider>(context, listen: false)
+        .conexionActivaUsuario;
+    _tabController = TabController(vsync: this, length: _hostIds.length)
+      ..addListener(_handleTabSelection);
+    _hostViews[widget.hostid] = createHostView(widget.hostid);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Define la cantidad de pestañas que necesites aquí
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(text: 'Servidor 1'),
-              Tab(text: 'Servidor 2'),
-              // Añade más pestañas según necesites
-            ],
-          ),
-          title: Text('Terminal View', style: CustomLabels.h1),
-        ),
-        body: TabBarView(
-          children: [
-            buildTerminalView(), // para el servidor 1
-            buildTerminalView(), // para el servidor 2
-            // Añade más vistas según necesites
-          ],
-        ),
-      ),
-    );
-  }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Podrías usar Provider aquí para buscar datos actualizados si es necesario.
 
-  Widget buildTerminalView() {
-    final terminalProvider = Provider.of<TerminalProvider>(context);
-    if (!terminalProvider.isConnected && terminalProvider.isExit) {
-      terminalProvider.isExit = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Future.delayed(const Duration(seconds: 1), () {
-          NavigationService.navigateTo('/dashboard');
-        });
+    // Luego actualiza la vista de la pestaña actual.
+    if (_tabController != null && _hostIds.isNotEmpty) {
+      setState(() {
+        _hostViews[_hostIds[_tabController!.index]] =
+            createHostView(_hostIds[_tabController!.index]);
       });
     }
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Expanded(
-          child: terminalProvider.isConnected
-              ? TerminalView(terminalProvider.terminal)
-              : buildConnectingView(),
-        ),
-      ],
+  }
+
+  void _handleTabSelection() {
+    if (_tabController!.indexIsChanging) {
+      setState(() {
+        // Aquí reconstruyes la vista para la pestaña seleccionada
+        _hostViews[_hostIds[_tabController!.index]] =
+            createHostView(_hostIds[_tabController!.index]);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController?.removeListener(_handleTabSelection);
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  void checkAndAddHostId(String newHostId) {
+    setState(() {
+      if (!_hostIds.contains(newHostId)) {
+        _hostIds.add(newHostId);
+        _hostViews[newHostId] = createHostView(newHostId);
+        // Asegúrate de actualizar el controlador con el nuevo número de tabs
+        _tabController?.dispose();
+        _tabController = TabController(
+            vsync: this,
+            length: _hostIds.length,
+            initialIndex: _hostIds.length - 1);
+      } else {
+        // Si el host ID ya existe, solo navega a la pestaña correspondiente
+        int index = _hostIds.indexOf(newHostId);
+        _tabController?.animateTo(index);
+      }
+    });
+    // Asegúrate de seleccionar el nuevo Tab inmediatamente después de añadirlo
+    _tabController?.animateTo(_hostIds.indexOf(newHostId));
+  }
+
+  Widget createHostView(String hostId) {
+    terminalProviders = Provider.of<sshConexionProvider>(context, listen: false)
+        .terminalProviders;
+    TerminalProvider terminalProvider = terminalProviders[hostId]!;
+
+    return TerminalViewPage(
+      hostid: hostId,
+      ownerid: widget.ownerid,
+      terminalProvider: terminalProvider,
     );
   }
 
-  Widget buildConnectingView() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: [0.1, 0.5, 0.9],
-          colors: [
-            Colors.blue[700]!,
-            Colors.blue[500]!,
-            Colors.blue[300]!,
-          ],
-        ),
+  // Modificación dentro del método build
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Terminal View'),
+        bottom: _hostIds.isNotEmpty
+            ? TabBar(
+                controller: _tabController,
+                isScrollable:
+                    true, // Añadir esto si quieres que las pestañas sean deslizables
+                tabs: _hostIds
+                    .map((id) => Tab(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Servidor $id'),
+                              // Botón de cierre
+                              GestureDetector(
+                                onTap: () {
+                                  _closeTab(id);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: Icon(Icons.close, size: 16),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              )
+            : null,
       ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(60),
-                shadowColor: Colors.black38,
-                elevation: 10,
-              ),
-              onPressed: () {},
-              child: FaIcon(
-                FontAwesomeIcons.dashboard,
-                color: Colors.blue[700],
-                size: 50.0,
-              ),
-            ),
-            const SizedBox(height: 30),
-            const SpinKitThreeBounce(
-              color: Colors.white,
-              size: 30.0,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Verificando...',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 1.5,
-                shadows: [
-                  Shadow(
-                    blurRadius: 8.0,
-                    color: Colors.black38,
-                    offset: Offset(2.0, 2.0),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: IndexedStack(
+        index: _tabController?.index,
+        children: _hostIds.map((id) => _hostViews[id] ?? Container()).toList(),
       ),
     );
+  }
+
+// Método para cerrar una pestaña
+  // Método para cerrar una pestaña
+  void _closeTab(String hostId) {
+    if (_hostIds.contains(hostId)) {
+      setState(() {
+        int indexToRemove = _hostIds.indexOf(hostId);
+        bool wasSelected = _tabController?.index == indexToRemove;
+
+        // Limpieza del estado
+        _hostIds.removeAt(indexToRemove);
+        _hostViews.remove(hostId);
+
+        // Actualizar el sshConexionProvider para limpiar las conexiones y terminales
+        final sshConexionprovider =
+            Provider.of<sshConexionProvider>(context, listen: false);
+        sshConexionprovider.removeConexion(hostId);
+        sshConexionprovider.removeTerminalProviderById(hostId);
+
+        // Comprobamos si todavía quedan pestañas después de eliminar una
+        if (_hostIds.isEmpty) {
+          // Si no quedan pestañas, regresamos al dashboard
+          NavigationService.navigateTo('/dashboard');
+        } else {
+          // Si quedan pestañas, creamos un nuevo TabController con la longitud correcta
+          _tabController?.dispose();
+          _tabController = TabController(vsync: this, length: _hostIds.length);
+
+          if (wasSelected) {
+            // Si la pestaña cerrada estaba seleccionada, actualizamos la pestaña seleccionada
+            _tabController?.index = min(indexToRemove, _hostIds.length - 1);
+          }
+
+          // Escuchar los cambios de selección de pestañas
+          _tabController?.addListener(_handleTabSelection);
+        }
+      });
+    }
   }
 }

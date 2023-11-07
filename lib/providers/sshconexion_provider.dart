@@ -1,12 +1,52 @@
 import 'package:dashboardadmin/api/restApi.dart';
 import 'package:dashboardadmin/models/http/host_response.dart';
+import 'package:dashboardadmin/providers/terminal_provider.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 class sshConexionProvider extends ChangeNotifier {
   List<Conexiones> conexiones = [];
   List<Conexiones> conexionUsuario = [];
+  List<String> conexionActivaUsuario = [];
+  final Map<String, TerminalProvider> terminalProviders = {};
+
   late Conexiones conexion = Conexiones.initial();
+  void newConexion(String id) {
+    // Verifica si el arreglo ya contiene el id
+    if (!conexionActivaUsuario.contains(id)) {
+      conexionActivaUsuario.add(id);
+      notifyListeners();
+    }
+  }
+
+  void removeConexion(String id) {
+    // Remueve el id del arreglo si este existe.
+    if (conexionActivaUsuario.contains(id)) {
+      conexionActivaUsuario.remove(id);
+      notifyListeners();
+    }
+  }
+
+  TerminalProvider getTerminalProviderForHostId(String hostId) {
+    if (!terminalProviders.containsKey(hostId)) {
+      terminalProviders[hostId] =
+          TerminalProvider(); // Crear una nueva instancia si no existe
+      // Aquí deberías inicializar tu terminal con los detalles de conexión
+    }
+    return terminalProviders[hostId]!;
+  }
+
+  void removeTerminalProviderById(String id) {
+    terminalProviders.remove(id);
+    notifyListeners();
+  }
+
+  // Método para limpiar el proveedor del terminal, si es necesario.
+  void disposeTerminalProviderForHostId(String hostId) {
+    terminalProviders[hostId]?.closeConnection();
+    terminalProviders.remove(hostId);
+  }
+
   getconexionesHost(String owner) async {
     final resp = await restApi.httpGet("/host/listar/$owner");
     final hostResponse = HostResponse.fromMap(resp);
@@ -14,11 +54,12 @@ class sshConexionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getinformacionHost(String id) async {
+  Future<Conexiones> getinformacionHost(String id) async {
     final resp = await restApi.httpGet("/host/hostpersonal/$id");
     final hostResponse = Conexiones.fromMap(resp);
     conexion = hostResponse;
     notifyListeners();
+    return hostResponse; // Devuelve el objeto Conexiones
   }
 
   Future postConexion(String nombre, String usuario, String owner,

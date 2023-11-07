@@ -57,6 +57,10 @@ class AppState extends StatelessWidget {
           lazy: false,
           create: (_) => SftpProvider(),
         ),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) => TerminalManager(),
+        ),
       ],
       child: MyApp(),
     );
