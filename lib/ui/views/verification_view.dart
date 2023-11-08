@@ -1,6 +1,6 @@
+import 'dart:async';
 import 'package:dashboardadmin/providers/auth_provider.dart';
 import 'package:dashboardadmin/providers/verification_form_provider.dart';
-import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,11 +8,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pinput/pinput.dart';
 
-class VerificationView extends StatelessWidget {
+class VerificationView extends StatefulWidget {
   const VerificationView({super.key});
 
   @override
+  VerificationScreen createState() => VerificationScreen();
+}
+
+class VerificationScreen extends State<VerificationView> {
+  int Counter = 90;
+
+  void initState() {
+    super.initState();
+    StartTimer();
+  }
+
+  void StartTimer() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (Counter > 0) {
+        setState(() {
+          Counter--;
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String Tiempo = Counter.toString() + ' segundos';
     final authProvider = Provider.of<AuthProvider>(context);
     return ChangeNotifierProvider(
         create: (_) => VerificationFormProvider(),
@@ -94,7 +119,7 @@ class VerificationView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '¿Ya tienes una cuenta?',
+                      '¿No recibiste el código?',
                       style: GoogleFonts.poppins(
                         color: const Color.fromARGB(255, 7, 31, 78),
                         fontWeight: FontWeight.w500,
@@ -106,7 +131,9 @@ class VerificationView extends StatelessWidget {
                     ),
                     GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Flurorouter.loginRoute);
+                          if (Counter == 0) {
+                            //Reenviar Código
+                          }
                         },
                         child: MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -114,17 +141,21 @@ class VerificationView extends StatelessWidget {
                               padding: const EdgeInsets.only(
                                 bottom: 1, // Space between underline and text
                               ),
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
-                                color: Color.fromARGB(255, 10, 125, 243),
-                                width: 1.0, // Underline thickness
+                                color: Counter == 0
+                                    ? const Color.fromARGB(255, 10, 125, 243)
+                                    : Colors.white,
+                                width: 1, // Underline thickness
                               ))),
                               child: Text(
-                                'Iniciar sesión',
+                                Counter == 0 ? 'Reenviar' : Tiempo,
                                 style: GoogleFonts.poppins(
-                                  color:
-                                      const Color.fromARGB(255, 10, 125, 243),
+                                  color: Counter == 0
+                                      ? const Color.fromARGB(255, 10, 125, 243)
+                                      : const Color.fromARGB(
+                                          255, 209, 209, 209),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
