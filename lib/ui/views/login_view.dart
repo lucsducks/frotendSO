@@ -4,15 +4,24 @@ import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
 import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import "package:google_fonts/google_fonts.dart";
 import 'package:provider/provider.dart';
 import 'dart:core';
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  LoginScreen createState() => LoginScreen();
+}
+
+class LoginScreen extends State<LoginView> {
+  bool passwordVisible = false;
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+
     return ChangeNotifierProvider(
       create: (_) => LoginFormProvider(),
       child: Builder(
@@ -63,25 +72,71 @@ class LoginView extends StatelessWidget {
                   height: 40,
                 ),
                 TextFormField(
-                  onFieldSubmitted: (_) =>
-                      onFormSubmit(loginFormProvider, authProvider),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ingrese su contraseña';
-                    }
-                    return null; //valido
-                  },
-                  onChanged: (value) => loginFormProvider.password = value,
-                  obscureText: true,
-                  style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromARGB(255, 7, 31, 78)),
-                  decoration: CustomInputs.loginInputDecoration(
-                      hint: 'Ingrese su contraseña',
-                      label: 'Contraseña',
-                      icon: Icons.lock_outline),
-                ),
+                    controller: passwordController,
+                    obscureText: !passwordVisible,
+                    onFieldSubmitted: (_) =>
+                        onFormSubmit(loginFormProvider, authProvider),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Ingrese su contraseña';
+                      }
+                      return null; //valido
+                    },
+                    onChanged: (value) => loginFormProvider.password = value,
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color.fromARGB(255, 7, 31, 78)),
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: const OutlineInputBorder(),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 10, 125, 243))),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 10, 125, 243)),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 247, 36, 36))),
+                        focusedErrorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 10, 125, 243))),
+                        hintText: 'Ingrese su contraseña',
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 209, 209, 209),
+                            fontSize: 16),
+                        labelText: 'Contraseña',
+                        labelStyle: GoogleFonts.poppins(
+                          color: Colors.blue,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.lock_outline,
+                          color: Color.fromARGB(255, 209, 209, 209),
+                        ),
+                        suffixIcon: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                              icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color:
+                                      const Color.fromARGB(255, 209, 209, 209)),
+                            ),
+                            const SizedBox(width: 10)
+                          ],
+                        ))),
                 const SizedBox(
                   height: 40,
                 ),

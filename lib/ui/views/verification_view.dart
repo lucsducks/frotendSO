@@ -2,10 +2,11 @@ import 'package:dashboardadmin/providers/auth_provider.dart';
 import 'package:dashboardadmin/providers/verification_form_provider.dart';
 import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
-import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pinput/pinput.dart';
 
 class VerificationView extends StatelessWidget {
   const VerificationView({super.key});
@@ -25,7 +26,7 @@ class VerificationView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Crear cuenta",
+                  "Verificación",
                   style: GoogleFonts.poppins(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -34,23 +35,43 @@ class VerificationView extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                TextFormField(
+                Text(
+                  'Ingrese el código de verificación enviado a su correo',
+                  style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: const Color.fromARGB(255, 7, 31, 78)),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Pinput(
+                  length: 6,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ingrese su usuario';
+                      return 'Ingrese el código de verificación';
+                    } else if (value.length != 6) {
+                      return 'Ingrese los 6 dígitos';
                     }
                     return null;
                   },
                   onChanged: (value) =>
                       verificationFormProvider.codigoVerificacion = value,
-                  style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromARGB(255, 7, 31, 78)),
-                  decoration: CustomInputs.loginInputDecoration(
-                      hint: 'Ingrese su usuario',
-                      label: 'Usuario',
-                      icon: Icons.supervised_user_circle_sharp),
+                  defaultPinTheme: PinTheme(
+                      width: 60,
+                      height: 60,
+                      textStyle: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromARGB(255, 7, 31, 78)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            width: 2,
+                            color: const Color.fromARGB(255, 10, 125, 243)),
+                      )),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 const SizedBox(
                   height: 40,
@@ -64,7 +85,10 @@ class VerificationView extends StatelessWidget {
                     }
                   },
                   text: 'Verificar',
-                  icon: Icons.lock_clock,
+                  icon: Icons.lock_person,
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

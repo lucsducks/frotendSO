@@ -13,16 +13,12 @@ class CustomInputs {
         enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-              color:
-                  Color.fromARGB(255, 10, 125, 243)), // Color del borde en foco
+          borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243)),
         ),
         errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color.fromARGB(255, 247, 36, 36))),
         focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color.fromARGB(
-                    255, 10, 125, 243))), // Color del borde en foco      ),
+            borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
         hintText: hint,
         hintStyle: const TextStyle(
             color: Color.fromARGB(255, 209, 209, 209), fontSize: 16),

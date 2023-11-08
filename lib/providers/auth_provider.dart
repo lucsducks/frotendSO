@@ -44,13 +44,8 @@ class AuthProvider extends ChangeNotifier {
       restApi.configureDio();
       notifyListeners();
     }).catchError((e) {
-      debugPrint("error $e");
-      if (e is Map && e.containsKey('errors')) {
-        final errorMsg = e['errors'][0]['msg'];
-        NotificationsService.showSnackbarError(errorMsg);
-      } else {
-        NotificationsService.showSnackbarError('Hable con el administrador');
-      }
+      NotificationsService.showSnackbarError(e.toString());
+      throw e;
     });
   }
 
