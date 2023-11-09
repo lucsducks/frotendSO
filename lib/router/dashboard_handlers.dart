@@ -6,6 +6,7 @@ import 'package:dashboardadmin/ui/views/dashboard_view.dart';
 import 'package:dashboardadmin/ui/views/host_personal_view.dart';
 import 'package:dashboardadmin/ui/views/icons_view.dart';
 import 'package:dashboardadmin/ui/views/login_view.dart';
+import 'package:dashboardadmin/ui/views/sftp_view.dart';
 import 'package:dashboardadmin/ui/views/usuarios_general_view.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +60,7 @@ class DashboardHandlers {
       return LoginView();
     }
   });
+
   static Handler blank = Handler(handlerFunc: (context, params) {
     final authProvider = Provider.of<AuthProvider>(context!);
     Provider.of<SideMenuProvider>(context, listen: false)

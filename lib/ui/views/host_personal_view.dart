@@ -109,6 +109,7 @@ class _HostPersonalViewState extends State<HostPersonalView>
         bottom: _hostIds.isNotEmpty
             ? TabBar(
                 controller: _tabController,
+
                 isScrollable:
                     true, // Añadir esto si quieres que las pestañas sean deslizables
                 tabs: _hostIds

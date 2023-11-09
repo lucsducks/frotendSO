@@ -14,6 +14,7 @@ class Flurorouter {
 
   static String dashboardRoute = '/dashboard';
   static String hostperonalRoute = '/dashboard/host/:hostid/owner/:ownerid';
+  static String sftpRoute = '/dashboard/sftp/:hostid/owner/:ownerid';
   static String iconsRoute = '/dashboard/icons';
   static String blankRoute = '/dashboard/blank';
   static String usuarioSinRoleRoute = '/dashboard/usuarios/sinroles';

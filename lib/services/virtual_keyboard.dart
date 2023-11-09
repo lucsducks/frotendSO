@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xterm/xterm.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Para los efectos hápticos
+
 class VirtualKeyboardView extends StatelessWidget {
-  const VirtualKeyboardView(this.keyboard, {super.key});
+  const VirtualKeyboardView(this.keyboard, {Key? key}) : super(key: key);
 
   final VirtualKeyboard keyboard;
 
@@ -10,22 +13,35 @@ class VirtualKeyboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: keyboard,
-      builder: (context, child) => ToggleButtons(
-        children: [Text('Ctrl'), Text('Alt'), Text('Shift')],
-        isSelected: [keyboard.ctrl, keyboard.alt, keyboard.shift],
-        onPressed: (index) {
-          switch (index) {
-            case 0:
-              keyboard.ctrl = !keyboard.ctrl;
-              break;
-            case 1:
-              keyboard.alt = !keyboard.alt;
-              break;
-            case 2:
-              keyboard.shift = !keyboard.shift;
-              break;
-          }
-        },
+      builder: (context, child) => Container(
+        padding: const EdgeInsets.all(
+            8.0), // Añadir algo de espacio alrededor de los botones
+        child: ToggleButtons(
+          borderColor: Colors.grey,
+          selectedBorderColor: Colors.blue,
+          selectedColor: Colors.white,
+          fillColor: Colors.blueAccent,
+          borderWidth: 2,
+          borderRadius:
+              BorderRadius.circular(8), // Botones con bordes redondeados
+          children: const <Widget>[Text('Ctrl'), Text('Alt'), Text('Shift')],
+          isSelected: [keyboard.ctrl, keyboard.alt, keyboard.shift],
+          onPressed: (index) {
+            HapticFeedback
+                .lightImpact(); // Retroalimentación táctil al presionar
+            switch (index) {
+              case 0:
+                keyboard.ctrl = !keyboard.ctrl;
+                break;
+              case 1:
+                keyboard.alt = !keyboard.alt;
+                break;
+              case 2:
+                keyboard.shift = !keyboard.shift;
+                break;
+            }
+          },
+        ),
       ),
     );
   }

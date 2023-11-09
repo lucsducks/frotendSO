@@ -1,5 +1,6 @@
 import 'package:dashboardadmin/services/navigation_service.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:dashboardadmin/services/virtual_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -59,6 +60,10 @@ class TerminalManager extends ChangeNotifier {
 
 class TerminalProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String? host;
+  int? port = 22;
+  String? username;
+  String? password;
   late Terminal terminal;
   bool isConnected = false;
   bool isExit = false;
@@ -66,15 +71,21 @@ class TerminalProvider extends ChangeNotifier {
   Function onCommandEntered = () {};
   SSHSession? session;
   SSHSocket? socket;
+  SftpClient? sftp;
+  List<SftpName> files = [];
+  String? remotePath;
+  String? localFileName;
+  String? selectedDirectory;
+  final keyboard = VirtualKeyboard(defaultInputHandler);
   TerminalProvider() {
-    terminal = Terminal();
+    terminal = Terminal(inputHandler: keyboard);
   }
 
   Future<void> initTerminal({
-    required String host,
-    required int port,
-    required String username,
-    required String password,
+    required host,
+    required port,
+    required username,
+    required password,
   }) async {
     try {
       isExit = false;
@@ -172,5 +183,43 @@ class TerminalProvider extends ChangeNotifier {
     isConnected = false;
     isExit = true;
     notifyListeners(); // Notificar a los oyentes sobre el cambio de estado.
+  }
+
+  Future<void> initSFTP({String path = './'}) async {
+    try {
+      terminal.write('Connecting to SFTP...\n');
+      var client = SSHClient(
+        await SSHSocket.connect(host!, port!),
+        username: username!,
+        onPasswordRequest: () => password,
+      );
+
+      sftp = await client.sftp();
+      await listDirectories(path, sftp!);
+      var files = await sftp!.listdir(path);
+      terminal.write('Listed ${files.length} items.\n');
+      notifyListeners();
+    } catch (e) {
+      terminal.write('Error connecting to SFTP: $e\n');
+      notifyListeners();
+    } finally {
+      sftp?.close();
+    }
+  }
+
+  Future<void> listDirectories(String path, SftpClient sftp) async {
+    if (sftp == null) {
+      print('Cliente SFTP no está conectado.');
+      return;
+    }
+
+    try {
+      final items = await sftp!.listdir(path);
+      files = items.where((item) {
+        return item.longname.startsWith('d');
+      }).toList();
+    } catch (e) {
+      print('Error al listar directorios: $e');
+    }
   }
 }

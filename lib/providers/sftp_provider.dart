@@ -30,8 +30,6 @@ class SftpProvider extends ChangeNotifier {
     }
   }
 
-  // Método para listar los directorios
-  // Método para listar los directorios
   Future<void> listDirectories(String path) async {
     if (_sftpClient == null) {
       print('Cliente SFTP no está conectado.');

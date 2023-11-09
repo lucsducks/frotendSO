@@ -2,6 +2,7 @@ import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/providers/terminal_provider.dart';
 import 'package:dashboardadmin/services/navigation_service.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:dashboardadmin/services/virtual_keyboard.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -105,6 +106,7 @@ class _TerminalViewPageState extends State<TerminalViewPage> {
     return Column(
       children: [
         const SizedBox(height: 10),
+        VirtualKeyboardView(widget.terminalProvider.keyboard),
         Expanded(
           child: widget.terminalProvider.isConnected
               ? TerminalView(widget.terminalProvider.terminal)
