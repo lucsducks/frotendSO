@@ -1,4 +1,3 @@
-import 'package:dashboardadmin/ui/views/sftp_view.dart';
 import 'package:dashboardadmin/ui/views/visorhost_view.dart';
 import 'package:flutter/material.dart';
 
@@ -32,11 +31,9 @@ class _IconsViewState extends State<IconsView> with TickerProviderStateMixin {
         ? Row(
             children: [
               Expanded(
-                // Envuelve SftpView en un Expanded
                 child: VisorHostView(),
               ),
               Expanded(
-                // Envuelve el segundo SftpView en otro Expanded
                 child: VisorHostView(),
               ),
             ],

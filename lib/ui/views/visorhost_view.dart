@@ -66,6 +66,11 @@ class _VisorHostViewState extends State<VisorHostView> {
         ownerIdSeleccionado != null) {
       // Si se seleccionó un host, muestra la vista SFTP
       return SftpView(
+        onBackToList: () {
+          setState(() {
+            mostrarSftp = false;
+          });
+        },
         hostid: hostIdSeleccionado!,
         ownerid: ownerIdSeleccionado!,
         password: password!,
