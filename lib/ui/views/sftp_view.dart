@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dartssh2/dartssh2.dart';
-import 'package:dashboardadmin/providers/sftp_provider.dart';
+import 'package:dashboardadmin/providers/auth_provider.dart';
+import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:dashboardadmin/ui/cards/host_card.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,9 @@ class _SftpViewState extends State<SftpView> {
   void initState() {
     super.initState();
     initSFTP();
+    final user = Provider.of<AuthProvider>(context, listen: false).user;
+    Provider.of<sshConexionProvider>(context, listen: false)
+        .getconexionesHost(user!.id);
   }
 
   @override
@@ -115,6 +120,57 @@ class _SftpViewState extends State<SftpView> {
     }
   }
 
+  void _mostrarListaConexiones(BuildContext context, String filePath) {
+    final conexiones =
+        Provider.of<sshConexionProvider>(context, listen: false).conexiones;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Seleccione una conexión'),
+          content: Container(
+            width: double.maxFinite, // Esto asegura que el diálogo sea ancho
+            child: ListView.builder(
+              shrinkWrap:
+                  true, // Esto es necesario para que ListView funcione dentro de un diálogo
+              itemCount: conexiones.length,
+              itemBuilder: (BuildContext context, int index) {
+                final e = conexiones[index];
+                return HostCard(
+                  direccionIp: e.direccionip,
+                  nombre: e.nombre,
+                  port: e.port,
+                  img: e.img,
+                  password: e.password,
+                  usuariohost: e.usuario,
+                  idHost: e.id,
+                  estado: e.estado,
+                  owner: e.owner,
+                  v: e.v,
+                  fechaCreacion: e.fechaCreacion,
+                  onTap: () {
+                    transferFileBetweenServers(
+                        filePath, e.direccionip, e.usuario, e.password, e.port);
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void onFileLongPress(BuildContext context, SftpFileDetails fileDetail) {
     final RenderBox overlay =
         Overlay.of(context)!.context.findRenderObject() as RenderBox;
@@ -134,8 +190,10 @@ class _SftpViewState extends State<SftpView> {
             'createDirectory', Colors.orange),
         _buildMenuItem(
             Icons.cloud_download, 'Descargar', 'download', Colors.lightBlue),
-        PopupMenuDivider(height: 10),
+        const PopupMenuDivider(height: 10),
         _buildMenuItem(Icons.delete_forever, 'Eliminar', 'delete', Colors.red),
+        _buildMenuItem(Icons.settings_ethernet, 'Transferir', 'showConexiones',
+            Colors.grey), // Nuevo ítem de menú
       ],
     ).then((value) => handleMenuAction(value, fileDetail, context));
   }
@@ -172,6 +230,9 @@ class _SftpViewState extends State<SftpView> {
       case 'delete':
         confirmDelete(context, fileDetail);
         break;
+      case 'showConexiones':
+        _mostrarListaConexiones(context, fileDetail.name);
+        break;
     }
   }
 
@@ -181,14 +242,14 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Crear nuevo archivo'),
+          title: const Text('Crear nuevo archivo'),
           content: TextField(
             autofocus: true,
             controller: _newFileNameController,
             decoration: InputDecoration(
               hintText: "Ingrese el nombre del archivo",
               border:
-                  OutlineInputBorder(), // Agrega un borde para definir mejor el campo
+                  const OutlineInputBorder(), // Agrega un borde para definir mejor el campo
               errorText: _newFileNameController.text.isEmpty && _triedToSubmit
                   ? 'El nombre no puede estar vacío'
                   : null,
@@ -197,14 +258,14 @@ class _SftpViewState extends State<SftpView> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.red),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Crear'),
+              child: const Text('Crear'),
               onPressed: () => _submitFileName(_newFileNameController.text),
             ),
           ],
@@ -224,7 +285,7 @@ class _SftpViewState extends State<SftpView> {
             true; // Una variable de estado que se pone a true cuando se intenta enviar el formulario
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('El nombre del archivo no puede estar vacío'),
           backgroundColor: Colors.red,
         ),
@@ -238,11 +299,11 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Crear nueva carpeta'),
+          title: const Text('Crear nueva carpeta'),
           content: TextField(
             autofocus: true,
             controller: _newDirectoryNameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Ingrese el nombre de la carpeta",
               border: OutlineInputBorder(),
             ),
@@ -251,14 +312,14 @@ class _SftpViewState extends State<SftpView> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.red),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Crear'),
+              child: const Text('Crear'),
               onPressed: () =>
                   _submitDirectoryName(_newDirectoryNameController.text),
             ),
@@ -400,6 +461,7 @@ class _SftpViewState extends State<SftpView> {
     SSHClient? client;
     SftpClient? sftp;
     SSHSocket? socket;
+    print(path);
     try {
       client = await createClient();
       if (client == null) {
@@ -444,16 +506,18 @@ class _SftpViewState extends State<SftpView> {
     }
   }
 
-  //! Todavia no probado
   Future<void> transferFileBetweenServers(
     String sourceFilePath,
-    String destinationFilePath,
     String destinationHost,
     String destinationUser,
     String destinationPassword,
     int destinationPort,
   ) async {
     Uint8List? fileData;
+
+    String destinationDirectory = './/izifileDownload';
+    String filename = sourceFilePath.split('/').last;
+    String destinationFilePath = '$destinationDirectory/$filename';
 
     try {
       var sourceClient = SSHClient(
@@ -471,8 +535,6 @@ class _SftpViewState extends State<SftpView> {
       print('Error al descargar el archivo del servidor fuente: $e');
       return;
     }
-
-    // Paso 2: Subir el archivo al servidor destino
     try {
       var destinationClient = SSHClient(
         await SSHSocket.connect(destinationHost, destinationPort),
@@ -481,11 +543,22 @@ class _SftpViewState extends State<SftpView> {
       );
 
       var destinationSftp = await destinationClient.sftp();
+
+      try {
+        await destinationSftp.mkdir(destinationDirectory);
+      } catch (e) {
+        // Maneja específicamente el error de "directorio ya existe" aquí
+        print('El directorio ya existe o no se pudo crear: $e');
+        // No necesitas retornar aquí, el proceso puede continuar
+      }
+
       var destinationFile = await destinationSftp.open(destinationFilePath,
           mode: SftpFileOpenMode.create | SftpFileOpenMode.write);
       await destinationFile.write(Stream.value(fileData));
       await destinationFile.close();
       destinationClient.close();
+      initSFTP(path: selectedDirectory!);
+      NotificationsService.showSnackbar('Archivo transferido con éxito');
     } catch (e) {
       print('Error al subir el archivo al servidor destino: $e');
       return;
@@ -610,7 +683,7 @@ class _SftpViewState extends State<SftpView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('SFTP Directories'),
+        title: const Text('SFTP Directories'),
         actions: isconnected
             ? <Widget>[
                 Row(
@@ -618,7 +691,7 @@ class _SftpViewState extends State<SftpView> {
                       .spaceEvenly, // Distribuye los botones de manera uniforme
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       color: Colors.blue, // O el color principal de tu app
                       tooltip:
                           'Atrás', // Texto que aparece al pasar el cursor por encima
@@ -627,7 +700,7 @@ class _SftpViewState extends State<SftpView> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.refresh),
+                      icon: const Icon(Icons.refresh),
                       color: Colors.green, // O el color principal de tu app
                       tooltip:
                           'Actualizar', // Texto que aparece al pasar el cursor por encima
@@ -636,7 +709,7 @@ class _SftpViewState extends State<SftpView> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.create_new_folder),
+                      icon: const Icon(Icons.create_new_folder),
                       color: Colors.orange, //
                       tooltip: 'Crear floder',
                       onPressed: () {
@@ -645,14 +718,14 @@ class _SftpViewState extends State<SftpView> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.note_add),
-                      color: Color.fromARGB(255, 11, 156, 23),
+                      color: const Color.fromARGB(255, 11, 156, 23),
                       tooltip: 'Crear archivo',
                       onPressed: () {
                         onAddFileButtonPressed();
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.cloud_upload),
+                      icon: const Icon(Icons.cloud_upload),
                       color: Colors.blue, // O el color principal de tu app
                       tooltip:
                           'Subir archivo', // Texto que aparece al pasar el cursor por encima
@@ -661,7 +734,7 @@ class _SftpViewState extends State<SftpView> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.exit_to_app),
+                      icon: const Icon(Icons.exit_to_app),
                       color: Colors
                           .red, // Color que indica una acción potencialmente peligrosa
                       tooltip:
@@ -688,7 +761,7 @@ class _SftpViewState extends State<SftpView> {
                           BorderRadius.circular(8), // Bordes redondeados
                       child: ListView.separated(
                         itemCount: files.length,
-                        separatorBuilder: (context, index) => Divider(
+                        separatorBuilder: (context, index) => const Divider(
                             indent:
                                 72), // Indenta los divisores para alinearlos con los títulos
                         itemBuilder: (BuildContext context, int index) {
@@ -753,7 +826,7 @@ class _SftpViewState extends State<SftpView> {
                 ),
               ],
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
