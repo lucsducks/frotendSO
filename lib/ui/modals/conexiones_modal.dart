@@ -8,6 +8,7 @@ import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ConexionModal extends StatefulWidget {
   final Conexiones? conexion;
@@ -26,6 +27,9 @@ class _ConexionModalState extends State<ConexionModal> {
   String direccionip = '';
   String port = '22';
   String? id;
+
+  bool passwordVisible = false;
+
   final List<String> iconsList = [
     'assets/icons/sound_file.svg',
     'assets/icons/server.svg',
@@ -170,14 +174,55 @@ class _ConexionModalState extends State<ConexionModal> {
                 style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
               ),
               TextFormField(
-                keyboardType: TextInputType.visiblePassword,
+                obscureText: !passwordVisible,
                 initialValue: widget.conexion?.password ?? '',
                 onChanged: (value) => password = value,
-                decoration: CustomInputs.loginInputDecoration(
-                  hint: 'Password del usuario',
-                  label: 'password',
-                  icon: Icons.new_releases_outlined,
-                ).copyWith(
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  border: const OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243)),
+                  ),
+                  errorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromARGB(255, 247, 36, 36))),
+                  focusedErrorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
+                  hintText: 'Password del usuario',
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 209, 209, 209), fontSize: 16),
+                  labelText: 'password',
+                  labelStyle: GoogleFonts.poppins(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.new_releases_outlined,
+                    color: const Color.fromARGB(255, 209, 209, 209),
+                  ),
+                  suffixIcon: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                              icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color:
+                                      const Color.fromARGB(255, 209, 209, 209)),
+                            ),
+                            const SizedBox(width: 10)
+                          ],
+                        )
+                  ).copyWith(
                   fillColor: Colors.white24,
                   filled: true,
                   hintStyle:
