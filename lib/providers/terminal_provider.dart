@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dartssh2/dartssh2.dart';
 import 'package:xterm/xterm.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'websocket.dart';
 
 class TerminalManager extends ChangeNotifier {
   // La lista para mantener las instancias de los terminales.
@@ -91,7 +93,12 @@ class TerminalProvider extends ChangeNotifier {
       isExit = false;
       terminal.write('Connecting...\r\n');
 
-      socket = await SSHSocket.connect(host, port);
+      if (kIsWeb) {
+        socket = await WebSocketSSHSocket.connect(host, 8080);
+      } else {
+        socket = await SSHSocket.connect(host, port);
+      }
+      
       sshClient = SSHClient(
         socket!,
         username: username,
@@ -188,11 +195,21 @@ class TerminalProvider extends ChangeNotifier {
   Future<void> initSFTP({String path = './'}) async {
     try {
       terminal.write('Connecting to SFTP...\n');
-      var client = SSHClient(
-        await SSHSocket.connect(host!, port!),
-        username: username!,
-        onPasswordRequest: () => password,
-      );
+      var client; 
+      
+      if (kIsWeb) {
+        client = SSHClient(
+            await WebSocketSSHSocket.connect(host!, 8080),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      } else {
+          client = SSHClient(
+            await SSHSocket.connect(host!, port!),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      }
 
       sftp = await client.sftp();
       await listDirectories(path, sftp!);
