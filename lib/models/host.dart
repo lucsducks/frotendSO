@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:dartssh2/dartssh2.dart';
 import 'package:xterm/xterm.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import '../providers/websocket.dart';
 
 class SSHConnection {
   Terminal terminal;
@@ -21,11 +23,19 @@ class SSHConnection {
     try {
       terminal.write('Connecting...\r\n');
 
-      sshClient = SSHClient(
-        await SSHSocket.connect(host, port),
-        username: username,
-        onPasswordRequest: () => password,
-      );
+      if (kIsWeb) {
+        sshClient = SSHClient(
+            await WebSocketSSHSocket.connect(host, 8080),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      } else {
+          sshClient = SSHClient(
+            await SSHSocket.connect(host, port),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      }
 
       terminal.write('Connected\r\n');
 

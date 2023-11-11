@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dartssh2/dartssh2.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'websocket.dart';
 
 class SftpProvider extends ChangeNotifier {
   SSHClient? _sshClient;
@@ -16,11 +18,19 @@ class SftpProvider extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      _sshClient = SSHClient(
-        await SSHSocket.connect(host, port),
-        username: username,
-        onPasswordRequest: () => password,
-      );
+    if (kIsWeb) {
+        _sshClient = SSHClient(
+            await WebSocketSSHSocket.connect(host, 8080),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      } else {
+          _sshClient = SSHClient(
+            await SSHSocket.connect(host, port),
+            username: username!,
+            onPasswordRequest: () => password,
+          );
+      }
 
       _sftpClient = await _sshClient!.sftp();
       notifyListeners();
