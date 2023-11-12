@@ -77,7 +77,8 @@ class _ConexionModalState extends State<ConexionModal> {
                 children: [
                   Text(
                     'Host',
-                    style: CustomLabels.h1.copyWith(color: Colors.blue),
+                    style: CustomLabels.h1.copyWith(
+                        color: const Color.fromARGB(255, 10, 125, 243)),
                   ),
                   DropdownButton<String>(
                     value: selectedIconPath,
@@ -99,7 +100,7 @@ class _ConexionModalState extends State<ConexionModal> {
                   IconButton(
                     icon: const Icon(
                       Icons.close,
-                      color: Colors.blue,
+                      color: Color.fromARGB(255, 10, 125, 243),
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
@@ -110,34 +111,26 @@ class _ConexionModalState extends State<ConexionModal> {
                 onChanged: (value) => nombre = value,
                 decoration: CustomInputs.loginInputDecoration(
                   hint: 'Nombre de la conexion',
-                  label: 'nombre',
+                  label: 'Nombre',
                   icon: Icons.new_releases_outlined,
-                ).copyWith(
-                  fillColor: Colors.white24,
-                  filled: true,
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
-                  labelStyle:
-                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color.fromARGB(255, 7, 31, 78)),
               ),
               TextFormField(
                 initialValue: widget.conexion?.direccionip ?? '',
                 onChanged: (value) => direccionip = value,
                 decoration: CustomInputs.loginInputDecoration(
-                  hint: 'Direccion ip o dominio del host',
-                  label: 'direccion ip o dominio',
+                  hint: 'IP / Dominio',
+                  label: 'Direccion ip / Dominio host',
                   icon: Icons.new_releases_outlined,
-                ).copyWith(
-                  fillColor: Colors.white24,
-                  filled: true,
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
-                  labelStyle:
-                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color.fromARGB(255, 7, 31, 78)),
               ),
               TextFormField(
                 initialValue: (widget.conexion?.port ?? '22').toString(),
@@ -146,91 +139,82 @@ class _ConexionModalState extends State<ConexionModal> {
                   hint: 'Puerto del host',
                   label: 'Puerto',
                   icon: Icons.new_releases_outlined,
-                ).copyWith(
-                  fillColor: Colors.white24,
-                  filled: true,
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
-                  labelStyle:
-                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color.fromARGB(255, 7, 31, 78)),
               ),
               TextFormField(
                 initialValue: widget.conexion?.usuario ?? '',
                 onChanged: (value) => usuario = value,
                 decoration: CustomInputs.loginInputDecoration(
                   hint: 'Nombre del usuario',
-                  label: 'usuario',
+                  label: 'Usuario',
                   icon: Icons.new_releases_outlined,
-                ).copyWith(
-                  fillColor: Colors.white24,
-                  filled: true,
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
-                  labelStyle:
-                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
                 ),
-                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color.fromARGB(255, 7, 31, 78)),
               ),
               TextFormField(
                 obscureText: !passwordVisible,
                 initialValue: widget.conexion?.password ?? '',
                 onChanged: (value) => password = value,
                 decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: const OutlineInputBorder(),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243)),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 247, 36, 36))),
-                  focusedErrorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 10, 125, 243))),
-                  hintText: 'Password del usuario',
-                  hintStyle: const TextStyle(
-                      color: Color.fromARGB(255, 209, 209, 209), fontSize: 16),
-                  labelText: 'password',
-                  labelStyle: GoogleFonts.poppins(
-                    color: Colors.blue,
-                    fontSize: 20,
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    border: const OutlineInputBorder(),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 10, 125, 243))),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 10, 125, 243)),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 247, 36, 36))),
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 10, 125, 243))),
+                    hintText: 'Password del usuario',
+                    hintStyle: const TextStyle(
+                        color: Color.fromARGB(255, 209, 209, 209),
+                        fontSize: 16),
+                    labelText: 'Password',
+                    labelStyle: GoogleFonts.poppins(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.new_releases_outlined,
+                      color: Color.fromARGB(255, 209, 209, 209),
+                    ),
+                    suffixIcon: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          icon: Icon(
+                              passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: const Color.fromARGB(255, 209, 209, 209)),
+                        ),
+                        const SizedBox(width: 10)
+                      ],
+                    )),
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.new_releases_outlined,
-                    color: const Color.fromARGB(255, 209, 209, 209),
-                  ),
-                  suffixIcon: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  passwordVisible = !passwordVisible;
-                                });
-                              },
-                              icon: Icon(
-                                  passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color:
-                                      const Color.fromARGB(255, 209, 209, 209)),
-                            ),
-                            const SizedBox(width: 10)
-                          ],
-                        )
-                  ).copyWith(
-                  fillColor: Colors.white24,
-                  filled: true,
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(153, 62, 61, 61)),
-                  labelStyle:
-                      const TextStyle(color: Color.fromARGB(179, 66, 65, 65)),
-                ),
-                style: const TextStyle(color: Color.fromARGB(255, 78, 78, 78)),
+                    color: const Color.fromARGB(255, 7, 31, 78)),
               ),
               const SizedBox(height: 20),
               CustomFilledButton(

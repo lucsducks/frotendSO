@@ -9,20 +9,18 @@ class TextSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            width: 0.5,
-            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
+            width: 1,
+            color: Colors.white.withOpacity(0.1),
           ),
         ),
       ),
       child: Text(
         text.toUpperCase(),
-        style: GoogleFonts.roboto(
-          color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+        style: GoogleFonts.poppins(
+          color: Colors.white,
           fontSize: 14,
           fontWeight: FontWeight.w500,
           letterSpacing: 1.2,

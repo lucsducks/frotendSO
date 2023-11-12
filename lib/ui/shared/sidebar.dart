@@ -4,9 +4,9 @@ import 'package:dashboardadmin/router/router.dart';
 import 'package:dashboardadmin/services/navigation_service.dart';
 import 'package:dashboardadmin/ui/shared/widgets/logo.dart';
 import 'package:dashboardadmin/ui/shared/widgets/menu_item.dart';
-import 'package:dashboardadmin/ui/shared/widgets/search_text.dart';
 import 'package:dashboardadmin/ui/shared/widgets/text_separator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Sidebar extends StatelessWidget {
@@ -27,19 +27,28 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final sideMenuProvider = Provider.of<SideMenuProvider>(context);
 
     return Drawer(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: Container(
-        decoration: buildBoxDecoration(),
-        child: ListView(
-          physics: ClampingScrollPhysics(),
-          children: [
-            DrawerHeader(child: Logo()), // Encabezado del Drawer
-            SearchText(),
-            SizedBox(height: 5),
-            ...buildMenuItems(context, sideMenuProvider),
-          ],
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 10, 125, 243),
+        ),
+        height: size.height,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            children: [
+              DrawerHeader(child: Logo()),
+              const SizedBox(height: 10),
+              ...buildMenuItems(context, sideMenuProvider),
+            ],
+          ),
         ),
       ),
     );
@@ -50,8 +59,17 @@ class Sidebar extends StatelessWidget {
     final user = Provider.of<AuthProvider>(context).user!;
     final allowedRoles = ["DEV_ROLE"];
 
+    Map<String, String> roleMap = {
+      'DEV_ROLE': 'Developer',
+      'USER_ROLE': 'Usuario'
+    };
+    String? readableRole = roleMap[user.rol];
+
+    String nombreUser = user.nombre;
+
     return [
-      TextSeparator(text: ' Main'),
+      const TextSeparator(text: 'Main'),
+      const SizedBox(height: 10),
       MenuItem(
         text: 'Hosts',
         icon: Icons.compass_calibration_outlined,
@@ -72,31 +90,80 @@ class Sidebar extends StatelessWidget {
           isActive:
               sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
         ),
-      SizedBox(height: 10),
       MenuItem(
         text: 'Terminal',
         icon: Icons.post_add_outlined,
         onPressed: () => navigateTo(Flurorouter.blankRoute, context),
         isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,
       ),
-      SizedBox(height: 10),
-      TextSeparator(text: 'Exit'),
+      const SizedBox(height: 50),
+      const TextSeparator(text: 'Cuenta'),
+      const SizedBox(height: 10),
+      Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              border: Border.all(width: 2, color: Colors.white),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: const Icon(
+              Icons.person,
+              color: Colors.white,
+              size: 40,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+              child: SizedBox(
+            height: 60,
+            child: Column(children: [
+              Expanded(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      (nombreUser.toString()),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white, // Texto azul
+                      ),
+                    )),
+              ),
+              Container(
+                height: 0.5,
+                width: double.maxFinite,
+                color: Colors.white.withOpacity(0.1),
+              ),
+              Expanded(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      (readableRole.toString()),
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w200,
+                        color: Colors.white, // Texto azul
+                      ),
+                    )),
+              )
+            ]),
+          ))
+        ],
+      ),
+      const SizedBox(height: 50),
+      const TextSeparator(text: 'Exit'),
+      const SizedBox(height: 10),
       MenuItem(
-          text: 'Logout',
-          icon: Icons.exit_to_app_outlined,
-          onPressed: () {
-            Provider.of<AuthProvider>(context, listen: false).logout();
-          }),
+        text: 'Cerrar sesión',
+        icon: Icons.exit_to_app_outlined,
+        onPressed: () {
+          Provider.of<AuthProvider>(context, listen: false).logout();
+        }
+      ),
     ];
   }
-
-  BoxDecoration buildBoxDecoration() => BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: const Color.fromARGB(31, 247, 12, 12),
-              blurRadius: 10,
-              spreadRadius: 1)
-        ],
-      );
 }

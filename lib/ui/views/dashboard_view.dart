@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DashboardView extends StatefulWidget {
+  const DashboardView({super.key});
+
   @override
   State<DashboardView> createState() => _DashboardViewState();
 }

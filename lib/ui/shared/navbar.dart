@@ -6,7 +6,7 @@ class Navbar extends AppBar {
   Navbar({Key? key})
       : super(
           key: key,
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 10, 125, 243),
           elevation: 5,
           title: Builder(
             builder: (BuildContext context) {
@@ -33,7 +33,7 @@ class Navbar extends AppBar {
               final size = MediaQuery.of(context).size;
               if (size.width <= 700) {
                 return IconButton(
-                  color: Colors.black,
+                  color: Colors.white,
                   icon: Icon(Icons.menu_outlined),
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 );

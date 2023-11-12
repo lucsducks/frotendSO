@@ -29,9 +29,11 @@ class BackgroundCustom extends StatelessWidget {
                 child: isResponsive
                     ? const Image(
                         image: AssetImage('assets/images/Logo-horizontal.png'),
+                        width: 400,
                       )
                     : const Image(
                         image: AssetImage('assets/images/Logo-vertical.png'),
+                        height: 60,
                       ))));
   }
 }

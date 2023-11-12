@@ -26,48 +26,39 @@ class _MenuItemState extends State<MenuItem> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double espacioMARGIN = (size.width >= 700) ? 8 : 0;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: espacioMARGIN),
-      decoration: BoxDecoration(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      child: Material(
         borderRadius: BorderRadius.circular(espacioMARGIN),
         color: widget.isActive
-            ? Color.fromARGB(255, 19, 108, 252)
+            ? Colors.white
             : Colors.transparent,
-      ),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 250),
-        child: Material(
+        child: InkWell(
           borderRadius: BorderRadius.circular(espacioMARGIN),
-          color: widget.isActive
-              ? Color.fromARGB(255, 19, 108, 252)
-              : Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(espacioMARGIN),
-            onTap: widget.isActive ? null : () => widget.onPressed(),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: MouseRegion(
-                onEnter: (_) => setState(() => isHovered = true),
-                onExit: (_) => setState(() => isHovered = false),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(widget.icon,
+          onTap: widget.isActive ? null : () => widget.onPressed(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            child: MouseRegion(
+              onEnter: (_) => setState(() => isHovered = true),
+              onExit: (_) => setState(() => isHovered = false),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(widget.icon,
+                      color: widget.isActive
+                          ? const Color.fromARGB(255, 10, 125, 243)
+                          : Colors.white,
+                      size: 20),
+                  const SizedBox(width: 15),
+                  Text(
+                    widget.text,
+                    style: GoogleFonts.poppins(
+                        fontSize: 18,
                         color: widget.isActive
-                            ? Colors.white
-                            : Color.fromARGB(255, 162, 165, 170),
-                        size: 20),
-                    SizedBox(width: 15),
-                    Text(
-                      widget.text,
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          color: widget.isActive
-                              ? Colors.white
-                              : Color.fromARGB(255, 162, 165, 170)),
-                    )
-                  ],
-                ),
+                            ? const Color.fromARGB(255, 10, 125, 243)
+                            : Colors.white),
+                  )
+                ],
               ),
             ),
           ),

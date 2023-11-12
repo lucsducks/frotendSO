@@ -21,6 +21,7 @@ class AuthProvider extends ChangeNotifier {
       final authResponse = AuthResponse.fromMap(json);
       user = authResponse.usuario;
       if (user!.verificado == false) {
+        LocalStorage.prefs.setString('correoPersonal', email);
         NotificationsService.showSnackbarError('Usuario no verificado');
         resend(email);
         return NavigationService.replaceTo(Flurorouter.verificationRoute);
