@@ -11,6 +11,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import '../../providers/websocket.dart';
 
 class SftpView extends StatefulWidget {
   final String hostid;
@@ -59,8 +61,13 @@ class _SftpViewState extends State<SftpView> {
   }
 
   Future<SSHClient?> createClient() async {
+    var socket;
     try {
-      var socket = await SSHSocket.connect(widget.direccionip, widget.port);
+      if (kIsWeb) {
+        socket = await WebSocketSSHSocket.connect(widget.direccionip, 8080);
+      } else {
+        socket = await SSHSocket.connect(widget.direccionip, widget.port);
+      }
       return SSHClient(socket,
           username: widget.usuario, onPasswordRequest: () => widget.password);
     } on SocketException catch (e) {
@@ -520,11 +527,23 @@ class _SftpViewState extends State<SftpView> {
     String destinationFilePath = '$destinationDirectory/$filename';
 
     try {
-      var sourceClient = SSHClient(
-        await SSHSocket.connect(widget.direccionip, widget.port),
-        username: widget.usuario,
-        onPasswordRequest: () => widget.password,
-      );
+
+      var sourceClient;
+
+      if (kIsWeb) {
+          sourceClient = SSHClient(
+            await WebSocketSSHSocket.connect(widget.direccionip, 8080),
+            username: widget.usuario,
+            onPasswordRequest: () => widget.password,
+          );
+      } else {
+          sourceClient = SSHClient(
+            await SSHSocket.connect(widget.direccionip, widget.port),
+            username: widget.usuario,
+            onPasswordRequest: () => widget.password,
+          );
+      }
+      
 
       var sourceSftp = await sourceClient.sftp();
       var sourceFile = await sourceSftp.open(sourceFilePath);
@@ -536,11 +555,21 @@ class _SftpViewState extends State<SftpView> {
       return;
     }
     try {
-      var destinationClient = SSHClient(
-        await SSHSocket.connect(destinationHost, destinationPort),
-        username: destinationUser,
-        onPasswordRequest: () => destinationPassword,
-      );
+      var destinationClient;
+
+      if (kIsWeb) {
+        destinationClient = SSHClient(
+            await WebSocketSSHSocket.connect(destinationHost, 8080),
+            username: destinationUser,
+            onPasswordRequest: () => destinationPassword,
+          );
+      } else {
+        destinationClient = SSHClient(
+          await SSHSocket.connect(destinationHost, destinationPort),
+          username: destinationUser,
+          onPasswordRequest: () => destinationPassword,
+        );
+      }
 
       var destinationSftp = await destinationClient.sftp();
 
@@ -554,7 +583,7 @@ class _SftpViewState extends State<SftpView> {
 
       var destinationFile = await destinationSftp.open(destinationFilePath,
           mode: SftpFileOpenMode.create | SftpFileOpenMode.write);
-      await destinationFile.write(Stream.value(fileData));
+      await destinationFile.write(Stream.value(fileData!));
       await destinationFile.close();
       destinationClient.close();
       initSFTP(path: selectedDirectory!);
@@ -632,11 +661,22 @@ class _SftpViewState extends State<SftpView> {
       PermissionStatus status =
           await Permission.manageExternalStorage.request();
       if (status.isGranted) {
-        final client = SSHClient(
-          await SSHSocket.connect(widget.direccionip, widget.port),
-          username: widget.usuario,
-          onPasswordRequest: () => widget.password,
-        );
+        final client;
+
+        if (kIsWeb) {
+        client = SSHClient(
+            await WebSocketSSHSocket.connect(widget.direccionip, 8080),
+            username: widget.usuario,
+            onPasswordRequest: () => widget.password,
+          );
+        } else {
+          client = SSHClient(
+            await SSHSocket.connect(widget.direccionip, widget.port),
+            username: widget.usuario,
+            onPasswordRequest: () => widget.password,
+          );
+        }
+        
         final sftp = await client.sftp();
         final remoteFile = await sftp.open(remotePath);
         final fileContent = await remoteFile.readBytes();

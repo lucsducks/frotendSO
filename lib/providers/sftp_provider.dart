@@ -24,13 +24,13 @@ class SftpProvider extends ChangeNotifier {
             username: username!,
             onPasswordRequest: () => password,
           );
-      } else {
+    } else {
           _sshClient = SSHClient(
             await SSHSocket.connect(host, port),
             username: username!,
             onPasswordRequest: () => password,
           );
-      }
+    }
 
       _sftpClient = await _sshClient!.sftp();
       notifyListeners();
