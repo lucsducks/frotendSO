@@ -37,7 +37,10 @@ class VerificationScreen extends State<VerificationView> {
 
   @override
   Widget build(BuildContext context) {
-    String Tiempo = Counter.toString() + ' segundos';
+    final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    String correoPersonal = args['correoPersonal'];
+    String msgVerification = 'Ingrese el código de verificación enviado a su correo: $correoPersonal';
+    String tiempo = '$Counter segundos';
     final authProvider = Provider.of<AuthProvider>(context);
     return ChangeNotifierProvider(
         create: (_) => VerificationFormProvider(),
@@ -61,7 +64,7 @@ class VerificationScreen extends State<VerificationView> {
                   height: 40,
                 ),
                 Text(
-                  'Ingrese el código de verificación enviado a su correo',
+                  msgVerification,
                   style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -132,7 +135,9 @@ class VerificationScreen extends State<VerificationView> {
                     GestureDetector(
                         onTap: () {
                           if (Counter == 0) {
-                            //Reenviar Código
+                            authProvider.resend(correoPersonal);
+                            Counter = 90;
+                            StartTimer();
                           }
                         },
                         child: MouseRegion(
@@ -150,7 +155,7 @@ class VerificationScreen extends State<VerificationView> {
                                 width: 1, // Underline thickness
                               ))),
                               child: Text(
-                                Counter == 0 ? 'Reenviar' : Tiempo,
+                                Counter == 0 ? 'Reenviar' : tiempo,
                                 style: GoogleFonts.poppins(
                                   color: Counter == 0
                                       ? const Color.fromARGB(255, 10, 125, 243)
