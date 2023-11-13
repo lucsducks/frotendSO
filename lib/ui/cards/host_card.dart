@@ -6,6 +6,7 @@ import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HostCard extends StatefulWidget {
@@ -73,128 +74,145 @@ class _HostCardState extends State<HostCard> {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onDoubleTap: widget.onTap,
-        child: Container(
-          child: Card(
-            color: _isHovering ? Colors.grey[300] : null,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Container(
-              height: 70, // Altura especificada
-              width: 350, // Ancho especificado
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // Imagen
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: SvgPicture.asset(
-                            widget
-                                .img!, // Reemplaza "some_icon" con el ícono que desees.
-                            height: 60,
-                            width:
-                                60, // Ajusta para que sea proporcional al height de la tarjeta
-                            color: Color.fromARGB(255, 84, 168,
-                                237), // Elige el color que desees para el ícono.
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Container(
+            width: 350,
+            color: _isHovering
+                ? const Color.fromARGB(255, 230, 242, 255)
+                : const Color.fromARGB(255, 241, 247, 255),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      // Imagen
+                      ClipRRect(
+                        child: SvgPicture.asset(
+                          widget.img!,
+                          height: 60,
+                          width: 60,
+                          color: const Color.fromARGB(255, 10, 125, 243),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center, // Centrar verticalmente
+                        children: <Widget>[
+                          Text(
+                            widget.nombre!,
+                            style: MyTextSample.title(context)!.copyWith(
+                              color: const Color.fromARGB(255, 7, 31, 78),
+                            ),
                           ),
+                          Container(height: 5),
+                          Text(
+                            widget.direccionIp!,
+                            style: MyTextSample.body1(context)!.copyWith(
+                              color: const Color.fromARGB(255, 133, 133, 133),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (_) =>
+                                  ConexionModal(conexion: conexion));
+                        },
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          color: Color.fromARGB(255, 7, 31, 78),
                         ),
-
-                        Container(width: 10), // Espacio entre imagen y texto
-                        // Textos
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment:
-                              MainAxisAlignment.center, // Centrar verticalmente
-                          children: <Widget>[
-                            Text(
-                              widget.nombre!,
-                              style: MyTextSample.title(context)!.copyWith(
-                                color: MyColorsSample.grey_80,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          final dialog = AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            title: Text(
+                              'Eliminar Host',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
+                                color: const Color.fromARGB(255, 7, 31, 78),
                               ),
                             ),
-                            Container(height: 5),
-                            Text(
-                              widget.direccionIp!,
-                              style: MyTextSample.body1(context)!.copyWith(
-                                color: Colors.grey[500],
+                            content: Text(
+                              '¿Está seguro de eliminar el host?',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal,
+                                color: const Color.fromARGB(255, 133, 133, 133),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            showCupertinoModalPopup(
-                                context: context,
-                                builder: (_) =>
-                                    ConexionModal(conexion: conexion));
-                          },
-                          icon: Icon(Icons.edit_outlined),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            final dialog = AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    10.0), // Personaliza los bordes
-                              ),
-                              title: Text(
-                                '¿Está seguro de eliminar el host?',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
+                            actions: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.red,
                                 ),
+                                child: Text(
+                                  'Cancelar',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              actions: [
-                                TextButton(
-                                  child: Text('No'),
-                                  onPressed: () {
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor:
+                                        const Color.fromARGB(255, 10, 125, 243),
+                                  ),
+                                  child: Text(
+                                    'Aceptar',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.normal,
+                                      color:const Color.fromARGB(255, 10, 125, 243),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    await Provider.of<sshConexionProvider>(
+                                            context,
+                                            listen: false)
+                                        .eliminarHost(
+                                            widget.idHost!, widget.owner);
                                     Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: Colors
-                                          .red, // Cambia el color del botón Borrar
-                                    ),
-                                    child: Text(
-                                      'Si',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    onPressed: () async {
-                                      await Provider.of<sshConexionProvider>(
-                                              context,
-                                              listen: false)
-                                          .eliminarHost(
-                                              widget.idHost!, widget.owner);
-                                      Navigator.of(context).pop();
-                                      NotificationsService.showSnackbar(
-                                          'Eliminado correctamente');
-                                    }),
-                              ],
-                            );
+                                    NotificationsService.showSnackbar(
+                                        'Eliminado correctamente');
+                                  }),
+                            ],
+                          );
 
-                            showDialog(
-                                context: context, builder: (_) => dialog);
-                          },
-                          icon: Icon(
-                            Icons.cancel_rounded,
-                            color: Colors.red,
-                          ),
+                          showDialog(context: context, builder: (_) => dialog);
+                        },
+                        icon: const Icon(
+                          Icons.cancel_rounded,
+                          color: Colors.red,
                         ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           ),

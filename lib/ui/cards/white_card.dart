@@ -14,7 +14,7 @@ class WhiteCard extends StatelessWidget {
     required this.child,
     this.title,
     this.width,
-    this.padding = const EdgeInsets.all(10),
+    this.padding = const EdgeInsets.all(20),
     this.margin = const EdgeInsets.all(8),
     this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   }) : super(key: key);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:xterm/xterm.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Para los efectos hápticos
+import 'package:flutter/services.dart';
 
 class VirtualKeyboardView extends StatelessWidget {
   const VirtualKeyboardView(this.keyboard, {Key? key}) : super(key: key);
@@ -14,17 +15,19 @@ class VirtualKeyboardView extends StatelessWidget {
     return AnimatedBuilder(
       animation: keyboard,
       builder: (context, child) => Container(
-        padding: const EdgeInsets.all(
-            8.0), // Añadir algo de espacio alrededor de los botones
+        padding: const EdgeInsets.all(8.0),
         child: ToggleButtons(
           borderColor: Colors.grey,
           selectedBorderColor: Colors.blue,
           selectedColor: Colors.white,
-          fillColor: Colors.blueAccent,
+          fillColor: const Color.fromARGB(255, 10, 125, 243),
           borderWidth: 2,
           borderRadius:
-              BorderRadius.circular(8), // Botones con bordes redondeados
-          children: const <Widget>[Text('Ctrl'), Text('Alt'), Text('Shift')],
+              BorderRadius.circular(8),
+          children: <Widget>[
+            Text('Ctrl',), 
+            Text('Alt'), 
+            Text('Shift')],
           isSelected: [keyboard.ctrl, keyboard.alt, keyboard.shift],
           onPressed: (index) {
             HapticFeedback

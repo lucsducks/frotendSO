@@ -5,6 +5,7 @@ import 'package:dashboardadmin/services/notificacion_service.dart';
 import 'package:dashboardadmin/services/virtual_keyboard.dart';
 import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:xterm/xterm.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -103,16 +104,29 @@ class _TerminalViewPageState extends State<TerminalViewPage> {
   }
 
   Widget buildTerminalView() {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        VirtualKeyboardView(widget.terminalProvider.keyboard),
-        Expanded(
-          child: widget.terminalProvider.isConnected
-              ? TerminalView(widget.terminalProvider.terminal)
-              : buildConnectingView(),
-        ),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 5,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          VirtualKeyboardView(widget.terminalProvider.keyboard),
+          Expanded(
+            child: widget.terminalProvider.isConnected
+                ? TerminalView(widget.terminalProvider.terminal)
+                : buildConnectingView(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -154,9 +168,9 @@ class _TerminalViewPageState extends State<TerminalViewPage> {
               size: 30.0,
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Verificando...',
-              style: TextStyle(
+            Text(
+              'Conectando...',
+              style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

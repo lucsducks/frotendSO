@@ -90,12 +90,12 @@ class Sidebar extends StatelessWidget {
           isActive:
               sideMenuProvider.currentPage == Flurorouter.usuarioSinRoleRoute,
         ),
-      MenuItem(
-        text: 'Terminal',
-        icon: Icons.post_add_outlined,
-        onPressed: () => navigateTo(Flurorouter.blankRoute, context),
-        isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,
-      ),
+      // MenuItem(
+      //   text: 'Terminal',
+      //   icon: Icons.post_add_outlined,
+      //   onPressed: () => navigateTo(Flurorouter.blankRoute, context),
+      //   isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,
+      // ),
       const SizedBox(height: 50),
       const TextSeparator(text: 'Cuenta'),
       const SizedBox(height: 10),

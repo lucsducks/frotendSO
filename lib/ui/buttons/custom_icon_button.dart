@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomIconButton extends StatelessWidget {
   final Function onPressed;
@@ -12,7 +13,7 @@ class CustomIconButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     required this.icon,
-    this.color = Colors.indigo,
+    this.color = const Color.fromARGB(255, 10, 125, 243),
     this.isFilled = false,
   }) : super(key: key);
 
@@ -29,9 +30,9 @@ class CustomIconButton extends StatelessWidget {
             return color;
           },
         ),
-        elevation: MaterialStateProperty.all(5.0), // Añade elevación
+        elevation: MaterialStateProperty.all(4), // Añade elevación
         padding: MaterialStateProperty.all(
-            EdgeInsets.symmetric(horizontal: 20, vertical: 10)), // Relleno
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 20)), // Relleno
       ),
       onPressed: () => onPressed(),
       child: Row(
@@ -39,10 +40,14 @@ class CustomIconButton extends StatelessWidget {
             MainAxisSize.min, // Ajusta el tamaño del Row a su contenido
         children: [
           Icon(icon, color: Colors.white),
-          SizedBox(width: 10), // Espaciado entre el ícono y el texto
+          const SizedBox(width: 10), // Espaciado entre el ícono y el texto
           Text(
             text,
-            style: TextStyle(color: Colors.white),
+            style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
           )
         ],
       ),

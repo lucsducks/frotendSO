@@ -9,8 +9,10 @@ import 'package:dashboardadmin/ui/cards/host_card.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
 
 class SftpView extends StatefulWidget {
   final String hostid;
@@ -128,7 +130,17 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Seleccione una conexión'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Seleccione una conexión',
+            style: GoogleFonts.poppins(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+              color: const Color.fromARGB(255, 7, 31, 78),
+            ),
+          ),
           content: Container(
             width: double.maxFinite, // Esto asegura que el diálogo sea ancho
             child: ListView.builder(
@@ -159,8 +171,18 @@ class _SftpViewState extends State<SftpView> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Cerrar'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(
+                'Cancelar',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.red,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
@@ -183,17 +205,15 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       position: position,
       items: [
-        _buildMenuItem(Icons.note_add, 'Crear archivo', 'create', Colors.green),
-        _buildMenuItem(
-            Icons.cloud_upload, 'Subir archivo', 'upload', Colors.blue),
         _buildMenuItem(Icons.create_new_folder, 'Crear carpeta',
             'createDirectory', Colors.orange),
+        _buildMenuItem(Icons.note_add, 'Crear archivo', 'create', Colors.green),
+        _buildMenuItem(Icons.upload, 'Subir archivo', 'upload', Colors.blue),
         _buildMenuItem(
-            Icons.cloud_download, 'Descargar', 'download', Colors.lightBlue),
-        const PopupMenuDivider(height: 10),
+            Icons.download, 'Descargar', 'download', Colors.lightBlue),
         _buildMenuItem(Icons.delete_forever, 'Eliminar', 'delete', Colors.red),
         _buildMenuItem(Icons.settings_ethernet, 'Transferir', 'showConexiones',
-            Colors.grey), // Nuevo ítem de menú
+            Colors.grey),
       ],
     ).then((value) => handleMenuAction(value, fileDetail, context));
   }
@@ -206,7 +226,11 @@ class _SftpViewState extends State<SftpView> {
         children: [
           Icon(icon, color: color),
           const SizedBox(width: 10),
-          Text(text),
+          Text(
+            text,
+            style:
+                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400),
+          ),
         ],
       ),
     );
@@ -242,14 +266,29 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Crear nuevo archivo'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Crear nuevo archivo',
+            style: GoogleFonts.poppins(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+              color: const Color.fromARGB(255, 7, 31, 78),
+            ),
+          ),
           content: TextField(
             autofocus: true,
             controller: _newFileNameController,
-            decoration: InputDecoration(
-              hintText: "Ingrese el nombre del archivo",
-              border:
-                  const OutlineInputBorder(), // Agrega un borde para definir mejor el campo
+            style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: const Color.fromARGB(255, 7, 31, 78)),
+            decoration: CustomInputs.loginInputDecoration(
+                    hint: 'Ingrese el nombre del archivo',
+                    label: 'Nombre del archivo',
+                    icon: Icons.insert_drive_file)
+                .copyWith(
               errorText: _newFileNameController.text.isEmpty && _triedToSubmit
                   ? 'El nombre no puede estar vacío'
                   : null,
@@ -257,15 +296,32 @@ class _SftpViewState extends State<SftpView> {
             onSubmitted: (_) => _submitFileName(_newFileNameController.text),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.red),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(
+                'Cancelar',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.red,
+                ),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            TextButton(
-              child: const Text('Crear'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 10, 125, 243),
+              ),
+              child: Text(
+                'Crear',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: const Color.fromARGB(255, 10, 125, 243),
+                ),
+              ),
               onPressed: () => _submitFileName(_newFileNameController.text),
             ),
           ],
@@ -299,27 +355,54 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Crear nueva carpeta'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Crear nuevo carpeta',
+            style: GoogleFonts.poppins(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+              color: const Color.fromARGB(255, 7, 31, 78),
+            ),
+          ),
           content: TextField(
             autofocus: true,
             controller: _newDirectoryNameController,
-            decoration: const InputDecoration(
-              hintText: "Ingrese el nombre de la carpeta",
-              border: OutlineInputBorder(),
-            ),
+            decoration: CustomInputs.loginInputDecoration(
+                hint: 'Ingrese el nombre de la carpeta',
+                label: 'Nombre de la carpeta',
+                icon: Icons.folder_rounded),
             onSubmitted: (_) =>
                 _submitDirectoryName(_newDirectoryNameController.text),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.red),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(
+                'Cancelar',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.red,
+                ),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            TextButton(
-              child: const Text('Crear'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 10, 125, 243),
+              ),
+              child: Text(
+                'Crear',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: const Color.fromARGB(255, 10, 125, 243),
+                ),
+              ),
               onPressed: () =>
                   _submitDirectoryName(_newDirectoryNameController.text),
             ),
@@ -347,18 +430,54 @@ class _SftpViewState extends State<SftpView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmar eliminación'),
-          content:
-              Text('¿Estás seguro de que quieres eliminar ${fileDetail.name}?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Confirmar eliminación',
+            style: GoogleFonts.poppins(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+              color: const Color.fromARGB(255, 7, 31, 78),
+            ),
+          ),
+          content: Text(
+            '¿Estás seguro de que quieres eliminar ${fileDetail.name}?',
+            style: GoogleFonts.poppins(
+              fontSize: 16.0,
+              fontWeight: FontWeight.normal,
+              color: const Color.fromARGB(255, 133, 133, 133),
+            ),
+          ),
           actions: <Widget>[
             ElevatedButton(
-              child: const Text('Cancelar'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(
+                'Cancelar',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.red,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
             ),
             ElevatedButton(
-              child: const Text('Eliminar'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 10, 125, 243),
+              ),
+              child: Text(
+                'Aceptar',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.normal,
+                  color: const Color.fromARGB(255, 10, 125, 243),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
                 deleteFile(
@@ -474,7 +593,7 @@ class _SftpViewState extends State<SftpView> {
       sftp = await client.sftp();
       await sftp.mkdir(path);
       initSFTP(path: selectedDirectory!);
-      NotificationsService.showSnackbar('Carpeta creado');
+      NotificationsService.showSnackbar('Carpeta creada');
     } catch (e) {
       NotificationsService.showSnackbarError(
           'Error al crear la carpeta,Ya existe');
@@ -679,7 +798,6 @@ class _SftpViewState extends State<SftpView> {
 
   @override
   Widget build(BuildContext context) {
-    // Accede al proveedor de SFTP
 
     return Scaffold(
       appBar: AppBar(
@@ -725,7 +843,7 @@ class _SftpViewState extends State<SftpView> {
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.cloud_upload),
+                      icon: const Icon(Icons.upload),
                       color: Colors.blue, // O el color principal de tu app
                       tooltip:
                           'Subir archivo', // Texto que aparece al pasar el cursor por encima

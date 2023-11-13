@@ -29,6 +29,8 @@ class CustomFilledButton extends StatelessWidget {
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           ),
+          shadowColor: MaterialStateProperty.all(Colors.black),
+          elevation: MaterialStateProperty.all(4),
           backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 10, 125, 243)),
         ),
         onPressed: () => onPressed(),

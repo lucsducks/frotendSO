@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dashboardadmin/ui/labels/custom_labels.dart';
 import 'package:dashboardadmin/providers/sshconexion_provider.dart';
 import 'package:dashboardadmin/providers/terminal_provider.dart';
 import 'package:dashboardadmin/services/navigation_service.dart';
@@ -103,41 +104,73 @@ class _HostPersonalViewState extends State<HostPersonalView>
   // Modificación dentro del método build
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Terminal View'),
-        bottom: _hostIds.isNotEmpty
-            ? TabBar(
-                controller: _tabController,
+    final size = MediaQuery.of(context).size;
+    double paddText = size.width > 1300 ? 0 : 20;
+    double sizedHeight = size.width > 1300 ? 20 : 0;
+    double paddTerminal = size.width > 1300 ? 50 : 0;
+    return Padding(
+      padding: EdgeInsets.all(paddTerminal),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(paddText),
+            child: Text('Terminal View', style: CustomLabels.h1),
+          ),
+          SizedBox(height: sizedHeight),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 5,
+                    offset: Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Scaffold(
+                appBar: AppBar(
+                  bottom: _hostIds.isNotEmpty
+                      ? TabBar(
+                          controller: _tabController,
 
-                isScrollable:
-                    true, // Añadir esto si quieres que las pestañas sean deslizables
-                tabs: _hostIds
-                    .map((id) => Tab(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Servidor $id'),
-                              // Botón de cierre
-                              GestureDetector(
-                                onTap: () {
-                                  _closeTab(id);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: Icon(Icons.close, size: 16),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ))
-                    .toList(),
-              )
-            : null,
-      ),
-      body: IndexedStack(
-        index: _tabController?.index,
-        children: _hostIds.map((id) => _hostViews[id] ?? Container()).toList(),
+                          isScrollable:
+                              true, // Añadir esto si quieres que las pestañas sean deslizables
+                          tabs: _hostIds
+                              .map((id) => Tab(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Servidor $id'),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _closeTab(id);
+                                          },
+                                          child: const Padding(
+                                            padding: EdgeInsets.only(left: 8),
+                                            child: Icon(Icons.close, size: 10),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                        )
+                      : null,
+                ),
+                body: IndexedStack(
+                  index: _tabController?.index,
+                  children: _hostIds
+                      .map((id) => _hostViews[id] ?? Container())
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
