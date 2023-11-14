@@ -250,7 +250,7 @@ class _SftpViewState extends State<SftpView> {
         selectAndUploadFile(fileDetail.name);
         break;
       case 'download':
-        downloadFileFromServer(fileDetail.name);
+        downloadFileFromServer('${selectedDirectory}/${fileDetail.name}');
         break;
       case 'delete':
         confirmDelete(context, fileDetail);
@@ -683,6 +683,7 @@ class _SftpViewState extends State<SftpView> {
       print('Error al subir el archivo al servidor destino: $e');
       return;
     }
+    NotificationsService.showSnackbar('Archivo transferido con éxito');
     print(
         'Archivo transferido con éxito del servidor fuente al servidor destino.');
   }
@@ -749,7 +750,10 @@ class _SftpViewState extends State<SftpView> {
               'Permiso de almacenamiento no concedido');
         }
       }
-      if (Platform.isLinux) {
+
+      PermissionStatus status =
+          await Permission.manageExternalStorage.request();
+      if (status.isGranted) {
         final client = SSHClient(
           await SSHSocket.connect(widget.direccionip, widget.port),
           username: widget.usuario,
@@ -758,45 +762,25 @@ class _SftpViewState extends State<SftpView> {
         final sftp = await client.sftp();
         final remoteFile = await sftp.open(remotePath);
         final fileContent = await remoteFile.readBytes();
-        final directory = await getDownloadsDirectory();
-        final directoryPath = directory?.path;
+        final directoryPath = await FilePicker.platform.getDirectoryPath();
+        if (directoryPath == null) {
+          NotificationsService.showSnackbarError(
+              'No se seleccionó ningún directorio');
+          return;
+        }
         String fileName = remotePath.split('/').last;
+        print(fileName);
         final file = File('$directoryPath/$fileName');
         await file.writeAsBytes(fileContent);
-        NotificationsService.showSnackbar('Archivo descargado');
         client.close();
         sftp.close();
+        NotificationsService.showSnackbar('Archivo descargado');
+      } else if (status.isPermanentlyDenied) {
+        NotificationsService.showSnackbarError(
+            'Por favor, habilita el permiso de almacenamiento en la configuración de la aplicación.');
       } else {
-        PermissionStatus status =
-            await Permission.manageExternalStorage.request();
-        if (status.isGranted) {
-          final client = SSHClient(
-            await SSHSocket.connect(widget.direccionip, widget.port),
-            username: widget.usuario,
-            onPasswordRequest: () => widget.password,
-          );
-          final sftp = await client.sftp();
-          final remoteFile = await sftp.open(remotePath);
-          final fileContent = await remoteFile.readBytes();
-          final directoryPath = await FilePicker.platform.getDirectoryPath();
-          if (directoryPath == null) {
-            NotificationsService.showSnackbarError(
-                'No se seleccionó ningún directorio');
-            return;
-          }
-          String fileName = remotePath.split('/').last;
-          final file = File('$directoryPath/$fileName');
-          await file.writeAsBytes(fileContent);
-          client.close();
-          sftp.close();
-          NotificationsService.showSnackbar('Archivo descargado');
-        } else if (status.isPermanentlyDenied) {
-          NotificationsService.showSnackbarError(
-              'Por favor, habilita el permiso de almacenamiento en la configuración de la aplicación.');
-        } else {
-          NotificationsService.showSnackbarError(
-              'Por favor, habilita el permiso de almacenamiento en la configuración de la aplicación.');
-        }
+        NotificationsService.showSnackbarError(
+            'Por favor, habilita el permiso de almacenamiento en la configuración de la aplicación.');
       }
     } catch (e) {
       NotificationsService.showSnackbarError('Error al descargar archivo: $e');

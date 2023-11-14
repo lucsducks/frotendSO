@@ -35,7 +35,7 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           lazy: false,
-          create: (_) => AuthProvider(), //lazy inicializa
+          create: (_) => AuthProvider(),
         ),
         ChangeNotifierProvider(
           lazy: false,
@@ -91,7 +91,6 @@ class MyApp extends StatelessWidget {
           layout = AuthLayout(child: child!);
         }
 
-        // Aquí envolvemos el layout seleccionado dentro de un SafeArea
         return SafeArea(child: layout);
       },
       theme: ThemeData.light().copyWith(

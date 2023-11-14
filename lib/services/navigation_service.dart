@@ -12,7 +12,9 @@ class NavigationService {
     return navigatorKey.currentState!.pushReplacementNamed(routeName);
   }
 
-  static verificationReplaceTo(String routeName, {required Map<String, String> arguments}) {
-    return navigatorKey.currentState!.pushReplacementNamed(routeName, arguments: arguments);
+  static verificationReplaceTo(String routeName,
+      {required Map<String, String> arguments}) {
+    return navigatorKey.currentState!
+        .pushReplacementNamed(routeName, arguments: arguments);
   }
 }

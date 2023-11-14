@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NotificationsService {
-  // Mantiene la instancia de la clave global del ScaffoldMessenger.
   static final GlobalKey<ScaffoldMessengerState> messengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  /// Muestra una notificación de error con el mensaje proporcionado.
   static void showSnackbarError(String message) {
     final snackBar = SnackBar(
       duration: Duration(seconds: 4),

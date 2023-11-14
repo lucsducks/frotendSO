@@ -24,7 +24,9 @@ class AuthProvider extends ChangeNotifier {
         LocalStorage.prefs.setString('correoPersonal', email);
         NotificationsService.showSnackbarError('Usuario no verificado');
         resend(email);
-        return NavigationService.verificationReplaceTo(Flurorouter.verificationRoute, arguments: {'correoPersonal': email});
+        return NavigationService.verificationReplaceTo(
+            Flurorouter.verificationRoute,
+            arguments: {'correoPersonal': email});
       }
       authStatus = AuthStatus.authenticated;
       LocalStorage.prefs.setString('token', authResponse.token);
@@ -41,7 +43,8 @@ class AuthProvider extends ChangeNotifier {
     debugPrint("data$data");
     restApi.post('/usuarios', data).then((json) {
       LocalStorage.prefs.setString('correoPersonal', email);
-      NavigationService.verificationReplaceTo(Flurorouter.verificationRoute, arguments: {'correoPersonal': email});
+      NavigationService.verificationReplaceTo(Flurorouter.verificationRoute,
+          arguments: {'correoPersonal': email});
       restApi.configureDio();
       notifyListeners();
     }).catchError((e) {
