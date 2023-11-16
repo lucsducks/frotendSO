@@ -62,6 +62,7 @@ class _IconsViewState extends State<IconsView> with TickerProviderStateMixin {
                           Expanded(
                             child: VisorHostView(),
                           ),
+                          SizedBox(width: 20,),
                           Expanded(
                             child: VisorHostView(),
                           ),
