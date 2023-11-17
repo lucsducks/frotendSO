@@ -1,9 +1,9 @@
-import 'package:dashboardadmin/providers/sshconexion_provider.dart';
-import 'package:dashboardadmin/providers/terminal_provider.dart';
-import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/services/virtual_keyboard.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/providers/sshconexion_provider.dart';
+import 'package:iziFile/providers/terminal_provider.dart';
+import 'package:iziFile/services/navigation_service.dart';
+import 'package:iziFile/services/notificacion_service.dart';
+import 'package:iziFile/services/virtual_keyboard.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';

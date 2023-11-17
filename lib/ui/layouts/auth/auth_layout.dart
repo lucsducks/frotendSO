@@ -1,4 +1,4 @@
-import 'package:dashboardadmin/ui/layouts/auth/widgets/backgroundcustom.dart';
+import 'package:iziFile/ui/layouts/auth/widgets/backgroundcustom.dart';
 import 'package:flutter/material.dart';
 
 class AuthLayout extends StatelessWidget {
@@ -30,7 +30,7 @@ class _DesktopBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double widthResponsive = (size.width > 1300) ? 1200 : 600;
-    bool isResponsive  = MediaQuery.of(context).size.width > 1300;
+    bool isResponsive = MediaQuery.of(context).size.width > 1300;
     return Container(
       height: size.height,
       width: size.width,
@@ -43,46 +43,45 @@ class _DesktopBody extends StatelessWidget {
       ),
       child: Center(
         child: Container(
-          width: widthResponsive,
-          height: 700,
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromARGB(80, 0, 0, 0),
-                offset: Offset(10, 10),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ),
-            ],
-          ),
-          child: isResponsive
-          ? Row(
-            children: [
-              const BackgroundCustom(),
-              Expanded(
-                child: Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: child,
+            width: widthResponsive,
+            height: 700,
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(80, 0, 0, 0),
+                  offset: Offset(10, 10),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
                 ),
-              ))
-            ],
-          )
-          : Column(
-            children: [
-              const BackgroundCustom(),
-              Expanded(
-                child: Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 50, right: 50),
-                  child: child,
-                ),
-              ))
-            ],
-          )
-        ),
+              ],
+            ),
+            child: isResponsive
+                ? Row(
+                    children: [
+                      const BackgroundCustom(),
+                      Expanded(
+                          child: Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(50),
+                          child: child,
+                        ),
+                      ))
+                    ],
+                  )
+                : Column(
+                    children: [
+                      const BackgroundCustom(),
+                      Expanded(
+                          child: Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50, right: 50),
+                          child: child,
+                        ),
+                      ))
+                    ],
+                  )),
       ),
     );
   }
@@ -104,10 +103,10 @@ class _MobileBody extends StatelessWidget {
           const BackgroundCustom(),
           Expanded(
             child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(left: 25, right: 25),
-              child: child
-            ),)
+                color: Colors.white,
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: child),
+          )
         ],
       ),
     );

@@ -1,7 +1,7 @@
-import 'package:dashboardadmin/models/usuario.dart';
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/usuario_provider.dart';
-import 'package:dashboardadmin/ui/modals/usuario_modal.dart';
+import 'package:iziFile/models/usuario.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/usuario_provider.dart';
+import 'package:iziFile/ui/modals/usuario_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

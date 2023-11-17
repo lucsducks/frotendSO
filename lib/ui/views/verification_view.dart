@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/verification_form_provider.dart';
-import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/verification_form_provider.dart';
+import 'package:iziFile/ui/buttons/custom_filled_button.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +37,11 @@ class VerificationScreen extends State<VerificationView> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     String correoPersonal = args['correoPersonal'];
-    String msgVerification = 'Ingrese el código de verificación enviado a su correo: $correoPersonal';
+    String msgVerification =
+        'Ingrese el código de verificación enviado a su correo: $correoPersonal';
     String tiempo = '$Counter segundos';
     final authProvider = Provider.of<AuthProvider>(context);
     return ChangeNotifierProvider(

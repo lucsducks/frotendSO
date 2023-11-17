@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dashboardadmin/ui/buttons/link_text.dart';
+import 'package:iziFile/ui/buttons/link_text.dart';
 
 class NoPageFoundView extends StatelessWidget {
   @override

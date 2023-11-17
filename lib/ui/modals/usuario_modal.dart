@@ -1,9 +1,9 @@
-import 'package:dashboardadmin/models/usuario.dart';
-import 'package:dashboardadmin/providers/usuario_provider.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
-import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/models/usuario.dart';
+import 'package:iziFile/providers/usuario_provider.dart';
+import 'package:iziFile/services/notificacion_service.dart';
+import 'package:iziFile/ui/buttons/custom_filled_button.dart';
+import 'package:iziFile/ui/inputs/custom_inputs.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

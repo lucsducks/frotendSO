@@ -1,6 +1,6 @@
-import 'package:dashboardadmin/router/admin_handlers.dart';
-import 'package:dashboardadmin/router/dashboard_handlers.dart';
-import 'package:dashboardadmin/router/no_page_found_handlers.dart';
+import 'package:iziFile/router/admin_handlers.dart';
+import 'package:iziFile/router/dashboard_handlers.dart';
+import 'package:iziFile/router/no_page_found_handlers.dart';
 import 'package:fluro/fluro.dart';
 
 class Flurorouter {

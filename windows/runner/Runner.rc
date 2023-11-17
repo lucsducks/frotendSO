@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "dashboardadmin" "\0"
+            VALUE "FileDescription", "iziFile" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "dashboardadmin" "\0"
+            VALUE "InternalName", "iziFile" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "dashboardadmin.exe" "\0"
-            VALUE "ProductName", "dashboardadmin" "\0"
+            VALUE "OriginalFilename", "iziFile.exe" "\0"
+            VALUE "ProductName", "iziFile" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

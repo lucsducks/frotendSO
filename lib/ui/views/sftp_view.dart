@@ -2,10 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dartssh2/dartssh2.dart';
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/sshconexion_provider.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/cards/host_card.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/sshconexion_provider.dart';
+import 'package:iziFile/services/notificacion_service.dart';
+import 'package:iziFile/ui/cards/host_card.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
+import 'package:iziFile/ui/inputs/custom_inputs.dart';
 
 class SftpView extends StatefulWidget {
   final String hostid;

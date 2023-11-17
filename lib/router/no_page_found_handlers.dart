@@ -1,4 +1,4 @@
-import 'package:dashboardadmin/ui/views/no_page_found_view.dart';
+import 'package:iziFile/ui/views/no_page_found_view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 

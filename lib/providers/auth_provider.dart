@@ -1,9 +1,9 @@
-import 'package:dashboardadmin/api/restApi.dart';
-import 'package:dashboardadmin/models/http/auth_response.dart';
-import 'package:dashboardadmin/router/router.dart';
-import 'package:dashboardadmin/services/localStorage.dart';
-import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:iziFile/api/restApi.dart';
+import 'package:iziFile/models/http/auth_response.dart';
+import 'package:iziFile/router/router.dart';
+import 'package:iziFile/services/localStorage.dart';
+import 'package:iziFile/services/navigation_service.dart';
+import 'package:iziFile/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 enum AuthStatus { checking, authenticated, notAuthenticated }

@@ -1,7 +1,7 @@
-import 'package:dashboardadmin/api/restApi.dart';
-import 'package:dashboardadmin/models/http/host_response.dart';
-import 'package:dashboardadmin/providers/terminal_provider.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:iziFile/api/restApi.dart';
+import 'package:iziFile/models/http/host_response.dart';
+import 'package:iziFile/providers/terminal_provider.dart';
+import 'package:iziFile/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 class sshConexionProvider extends ChangeNotifier {

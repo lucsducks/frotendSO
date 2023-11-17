@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
-import 'package:dashboardadmin/providers/sshconexion_provider.dart';
-import 'package:dashboardadmin/providers/terminal_provider.dart';
-import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/ui/views/terminal_view.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
+import 'package:iziFile/providers/sshconexion_provider.dart';
+import 'package:iziFile/providers/terminal_provider.dart';
+import 'package:iziFile/services/navigation_service.dart';
+import 'package:iziFile/ui/views/terminal_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

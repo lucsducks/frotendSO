@@ -1,8 +1,8 @@
-import 'package:dashboardadmin/models/http/host_response.dart';
-import 'package:dashboardadmin/providers/sshconexion_provider.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/modals/conexiones_modal.dart';
-import 'package:dashboardadmin/ui/shared/widgets/colores_card.dart';
+import 'package:iziFile/models/http/host_response.dart';
+import 'package:iziFile/providers/sshconexion_provider.dart';
+import 'package:iziFile/services/notificacion_service.dart';
+import 'package:iziFile/ui/modals/conexiones_modal.dart';
+import 'package:iziFile/ui/shared/widgets/colores_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -187,7 +187,8 @@ class _HostCardState extends State<HostCard> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.normal,
-                                      color:const Color.fromARGB(255, 10, 125, 243),
+                                      color: const Color.fromARGB(
+                                          255, 10, 125, 243),
                                     ),
                                   ),
                                   onPressed: () async {

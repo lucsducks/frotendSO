@@ -1,4 +1,4 @@
-import 'package:dashboardadmin/providers/auth_provider.dart';
+import 'package:iziFile/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 // ignore: depend_on_referenced_packages

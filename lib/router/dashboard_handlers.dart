@@ -1,13 +1,13 @@
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/sidemenu_provider.dart';
-import 'package:dashboardadmin/router/router.dart';
-import 'package:dashboardadmin/ui/views/blank_view.dart';
-import 'package:dashboardadmin/ui/views/dashboard_view.dart';
-import 'package:dashboardadmin/ui/views/host_personal_view.dart';
-import 'package:dashboardadmin/ui/views/icons_view.dart';
-import 'package:dashboardadmin/ui/views/login_view.dart';
-import 'package:dashboardadmin/ui/views/sftp_view.dart';
-import 'package:dashboardadmin/ui/views/usuarios_general_view.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/sidemenu_provider.dart';
+import 'package:iziFile/router/router.dart';
+import 'package:iziFile/ui/views/blank_view.dart';
+import 'package:iziFile/ui/views/dashboard_view.dart';
+import 'package:iziFile/ui/views/host_personal_view.dart';
+import 'package:iziFile/ui/views/icons_view.dart';
+import 'package:iziFile/ui/views/login_view.dart';
+import 'package:iziFile/ui/views/sftp_view.dart';
+import 'package:iziFile/ui/views/usuarios_general_view.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
 

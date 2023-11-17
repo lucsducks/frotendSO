@@ -1,5 +1,5 @@
-import 'package:dashboardadmin/ui/shared/navbar.dart';
-import 'package:dashboardadmin/ui/shared/sidebar.dart';
+import 'package:iziFile/ui/shared/navbar.dart';
+import 'package:iziFile/ui/shared/sidebar.dart';
 import 'package:flutter/material.dart';
 
 class DashboardLayout extends StatelessWidget {

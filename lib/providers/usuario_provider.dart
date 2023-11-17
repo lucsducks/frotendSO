@@ -1,7 +1,7 @@
-import 'package:dashboardadmin/api/restApi.dart';
-import 'package:dashboardadmin/models/http/usuario_response.dart';
-import 'package:dashboardadmin/models/usuario.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
+import 'package:iziFile/api/restApi.dart';
+import 'package:iziFile/models/http/usuario_response.dart';
+import 'package:iziFile/models/usuario.dart';
+import 'package:iziFile/services/notificacion_service.dart';
 import 'package:flutter/material.dart';
 
 class UsuariosSistemaProvider extends ChangeNotifier {

@@ -1,5 +1,5 @@
-import 'package:dashboardadmin/ui/cards/white_card.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/ui/cards/white_card.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 
 class BlankView extends StatefulWidget {

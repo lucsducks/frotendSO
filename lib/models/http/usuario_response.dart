@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dashboardadmin/models/usuario.dart';
+import 'package:iziFile/models/usuario.dart';
 
 class UsuarioResponse {
   UsuarioResponse({

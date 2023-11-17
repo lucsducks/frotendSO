@@ -1,12 +1,12 @@
-import 'package:dashboardadmin/datatables/usuario_datasource.dart';
-import 'package:dashboardadmin/providers/usuario_provider.dart';
-import 'package:dashboardadmin/ui/cards/white_card.dart';
-import 'package:dashboardadmin/ui/dropdate/custom_drop_date.dart';
-import 'package:dashboardadmin/ui/shared/widgets/search_text.dart';
+import 'package:iziFile/datatables/usuario_datasource.dart';
+import 'package:iziFile/providers/usuario_provider.dart';
+import 'package:iziFile/ui/cards/white_card.dart';
+import 'package:iziFile/ui/dropdate/custom_drop_date.dart';
+import 'package:iziFile/ui/shared/widgets/search_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 
 class UsuarioSinRoleView extends StatefulWidget {
   @override

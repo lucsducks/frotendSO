@@ -1,10 +1,10 @@
-import 'package:dashboardadmin/models/http/host_response.dart';
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/sshconexion_provider.dart';
-import 'package:dashboardadmin/services/notificacion_service.dart';
-import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
-import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/models/http/host_response.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/sshconexion_provider.dart';
+import 'package:iziFile/services/notificacion_service.dart';
+import 'package:iziFile/ui/buttons/custom_filled_button.dart';
+import 'package:iziFile/ui/inputs/custom_inputs.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -120,7 +120,9 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 initialValue: widget.conexion?.direccionip ?? '',
                 onChanged: (value) => direccionip = value,
@@ -134,7 +136,9 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 initialValue: (widget.conexion?.port ?? '22').toString(),
                 onChanged: (value) => port = value,
@@ -148,7 +152,9 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 initialValue: widget.conexion?.usuario ?? '',
                 onChanged: (value) => usuario = value,
@@ -162,7 +168,9 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 obscureText: !passwordVisible,
                 initialValue: widget.conexion?.password ?? '',

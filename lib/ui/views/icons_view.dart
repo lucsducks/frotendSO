@@ -1,6 +1,6 @@
-import 'package:dashboardadmin/ui/views/visorhost_view.dart';
+import 'package:iziFile/ui/views/visorhost_view.dart';
 import 'package:flutter/material.dart';
-import 'package:dashboardadmin/ui/labels/custom_labels.dart';
+import 'package:iziFile/ui/labels/custom_labels.dart';
 
 class IconsView extends StatefulWidget {
   const IconsView({super.key});
@@ -62,7 +62,9 @@ class _IconsViewState extends State<IconsView> with TickerProviderStateMixin {
                           Expanded(
                             child: VisorHostView(),
                           ),
-                          SizedBox(width: 20,),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Expanded(
                             child: VisorHostView(),
                           ),

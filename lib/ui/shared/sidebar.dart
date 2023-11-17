@@ -1,10 +1,10 @@
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/sidemenu_provider.dart';
-import 'package:dashboardadmin/router/router.dart';
-import 'package:dashboardadmin/services/navigation_service.dart';
-import 'package:dashboardadmin/ui/shared/widgets/logo.dart';
-import 'package:dashboardadmin/ui/shared/widgets/menu_item.dart';
-import 'package:dashboardadmin/ui/shared/widgets/text_separator.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/sidemenu_provider.dart';
+import 'package:iziFile/router/router.dart';
+import 'package:iziFile/services/navigation_service.dart';
+import 'package:iziFile/ui/shared/widgets/logo.dart';
+import 'package:iziFile/ui/shared/widgets/menu_item.dart';
+import 'package:iziFile/ui/shared/widgets/text_separator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -158,12 +158,11 @@ class Sidebar extends StatelessWidget {
       const TextSeparator(text: 'Exit'),
       const SizedBox(height: 10),
       MenuItem(
-        text: 'Cerrar sesión',
-        icon: Icons.exit_to_app_outlined,
-        onPressed: () {
-          Provider.of<AuthProvider>(context, listen: false).logout();
-        }
-      ),
+          text: 'Cerrar sesión',
+          icon: Icons.exit_to_app_outlined,
+          onPressed: () {
+            Provider.of<AuthProvider>(context, listen: false).logout();
+          }),
     ];
   }
 }

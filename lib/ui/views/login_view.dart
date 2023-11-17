@@ -1,8 +1,8 @@
-import 'package:dashboardadmin/providers/auth_provider.dart';
-import 'package:dashboardadmin/providers/login_form_provider.dart';
-import 'package:dashboardadmin/router/router.dart';
-import 'package:dashboardadmin/ui/buttons/custom_filled_button.dart';
-import 'package:dashboardadmin/ui/inputs/custom_inputs.dart';
+import 'package:iziFile/providers/auth_provider.dart';
+import 'package:iziFile/providers/login_form_provider.dart';
+import 'package:iziFile/router/router.dart';
+import 'package:iziFile/ui/buttons/custom_filled_button.dart';
+import 'package:iziFile/ui/inputs/custom_inputs.dart';
 import 'package:flutter/material.dart';
 import "package:google_fonts/google_fonts.dart";
 import 'package:provider/provider.dart';

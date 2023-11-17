@@ -1,4 +1,4 @@
-name: dashboardadmin
+name: iziFile
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -55,6 +55,7 @@ dependencies:
   shared_preferences: ^2.2.1
   xterm: ^3.2.6
   device_info_plus: ^9.1.0
+  icons_launcher: ^2.1.5
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
@@ -73,10 +74,19 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
+#flutter_icons:
+#  android: "launcher_icon"
+#  ios: true
+#  image_path: "assets/images/icon.png"
+icons_launcher:
   image_path: "assets/images/icon.png"
+  platforms:
+    windows:
+      enable: true
+      image_path: "assets/images/icon.png"
+#    linux:
+#      enable: true
+#      image_path: "assets/images/icon.png"
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
