@@ -256,7 +256,8 @@ class _SftpViewState extends State<SftpView> {
         confirmDelete(context, fileDetail);
         break;
       case 'showConexiones':
-        _mostrarListaConexiones(context, fileDetail.name);
+        _mostrarListaConexiones(
+            context, '${selectedDirectory}/${fileDetail.name}');
         break;
     }
   }
@@ -652,7 +653,8 @@ class _SftpViewState extends State<SftpView> {
       await sourceFile.close();
       sourceClient.close();
     } catch (e) {
-      print('Error al descargar el archivo del servidor fuente: $e');
+      NotificationsService.showSnackbarError(
+          'Error al descargar el archivo del servidor fuente: $e');
       return;
     }
     try {
@@ -667,7 +669,6 @@ class _SftpViewState extends State<SftpView> {
       try {
         await destinationSftp.mkdir(destinationDirectory);
       } catch (e) {
-        // Maneja específicamente el error de "directorio ya existe" aquí
         print('El directorio ya existe o no se pudo crear: $e');
         // No necesitas retornar aquí, el proceso puede continuar
       }
@@ -680,6 +681,8 @@ class _SftpViewState extends State<SftpView> {
       initSFTP(path: selectedDirectory!);
       NotificationsService.showSnackbar('Archivo transferido con éxito');
     } catch (e) {
+      NotificationsService.showSnackbarError(
+          'Error al subir el archivo al servidor destino: $e');
       print('Error al subir el archivo al servidor destino: $e');
       return;
     }
