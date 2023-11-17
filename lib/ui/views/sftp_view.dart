@@ -787,6 +787,27 @@ class _SftpViewState extends State<SftpView> {
     }
   }
 
+  Future<String> resolveSymbolicLinkPath(String path) async {
+    SSHClient? client;
+    SftpClient? sftp;
+    try {
+      client = await createClient();
+      if (client == null) {
+        throw Exception('No se pudo crear el cliente SSH');
+      }
+      sftp = await client.sftp();
+
+      // Usa la función readlink para obtener la ruta a la que apunta el enlace simbólico
+      final targetPath = await sftp.readlink(path);
+      return targetPath;
+    } catch (e) {
+      print('Error al resolver el enlace simbólico: $e');
+      return path; // Devuelve la ruta original si no se puede resolver el enlace
+    } finally {
+      closeConnections(client, sftp, null);
+    }
+  }
+
   void navigateBack() {
     if (selectedDirectory != './') {
       final parentDir = selectedDirectory!
@@ -889,17 +910,29 @@ class _SftpViewState extends State<SftpView> {
                           final fileDetail = files[index];
                           var isDirectory =
                               fileDetail.permissions.startsWith('d');
-                          var iconData = isDirectory
+                          var isSymbolicLink =
+                              fileDetail.permissions.startsWith('l');
+
+                          var iconData = isDirectory || isSymbolicLink
                               ? Icons.folder
                               : Icons
                                   .description; // Usa iconos de descripción para archivos
 
                           return InkWell(
                             onTap: () {
-                              if (isDirectory) {
-                                initSFTP(
-                                    path:
-                                        '${selectedDirectory}/${fileDetail.name}');
+                              if (isDirectory || isSymbolicLink) {
+                                (() async {
+                                  try {
+                                    var newPath = isDirectory
+                                        ? '${selectedDirectory}/${fileDetail.name}'
+                                        : await resolveSymbolicLinkPath(
+                                            '${selectedDirectory}/${fileDetail.name}');
+                                    initSFTP(path: newPath);
+                                  } catch (e) {
+                                    print('Error: $e');
+                                    // Opcionalmente manejar el error aquí
+                                  }
+                                })();
                               }
                             },
                             onTapDown: (TapDownDetails details) {
@@ -918,7 +951,7 @@ class _SftpViewState extends State<SftpView> {
                               child: ListTile(
                                 leading: Icon(
                                   iconData,
-                                  color: isDirectory
+                                  color: isDirectory || isSymbolicLink
                                       ? Colors.amber
                                       : Colors.blue[300],
                                 ),
