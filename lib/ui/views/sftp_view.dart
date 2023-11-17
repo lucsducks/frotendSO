@@ -800,7 +800,6 @@ class _SftpViewState extends State<SftpView> {
       }
       sftp = await client.sftp();
 
-      // Usa la función readlink para obtener la ruta a la que apunta el enlace simbólico
       final targetPath = await sftp.readlink(path);
       return targetPath;
     } catch (e) {
