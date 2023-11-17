@@ -106,6 +106,7 @@ class _ConexionModalState extends State<ConexionModal> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
               TextFormField(
                 initialValue: widget.conexion?.nombre ?? '',
                 onChanged: (value) => nombre = value,
@@ -119,6 +120,7 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
+              const SizedBox(height: 20,),
               TextFormField(
                 initialValue: widget.conexion?.direccionip ?? '',
                 onChanged: (value) => direccionip = value,
@@ -132,6 +134,7 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
+              const SizedBox(height: 20,),
               TextFormField(
                 initialValue: (widget.conexion?.port ?? '22').toString(),
                 onChanged: (value) => port = value,
@@ -145,6 +148,7 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
+              const SizedBox(height: 20,),
               TextFormField(
                 initialValue: widget.conexion?.usuario ?? '',
                 onChanged: (value) => usuario = value,
@@ -158,6 +162,7 @@ class _ConexionModalState extends State<ConexionModal> {
                     fontWeight: FontWeight.w500,
                     color: const Color.fromARGB(255, 7, 31, 78)),
               ),
+              const SizedBox(height: 20,),
               TextFormField(
                 obscureText: !passwordVisible,
                 initialValue: widget.conexion?.password ?? '',
